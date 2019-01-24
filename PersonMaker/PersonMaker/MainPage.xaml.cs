@@ -35,6 +35,10 @@ namespace PersonMaker
         private PersonGroup knownGroup;
         private int minPhotos = 6;
 
+        string personUserData;
+        string personDataName;
+        private Person knownPerson;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -183,6 +187,45 @@ namespace PersonMaker
             }
         }
 
+        private async void FetchPerson_Click(object sender, RoutedEventArgs e)
+        {
+            personName = PersonNameTextBox.Text;
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            authKey = AuthKeyTextBox.Text;
+
+            await ApiCallAllowed(true);
+            faceServiceClient = new FaceServiceClient(authKey);
+
+            if (null != faceServiceClient && null != knownGroup && personName.Length > 0)
+            {
+                // You may experience issues with this below call, if you are attempting connection with
+                // a service location other than 'West US'
+                Person[] people = await GetKnownPeople();
+                var matchedPeople = people.Where(p => p.Name == personName);
+
+                if (matchedPeople.Count() > 0)
+                {
+                    knownPerson = matchedPeople.FirstOrDefault();
+
+                    PersonStatusTextBlock.Text = "Found existing: " + knownPerson.Name;
+                }
+
+                if (null == knownPerson)
+                {
+                    PersonStatusTextBlock.Text = "Could not find group: " + knownPerson.Name;
+                }
+
+                if (PersonStatusTextBlock.Text.ToLower().Contains("found"))
+                {
+                    PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                }
+                else
+                {
+                    PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                }
+            }
+        }
+
 
         private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
         {
@@ -200,7 +243,51 @@ namespace PersonMaker
             }
         }
 
+        //To Do: finish CreateUserDataButton
+        private async void CreateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            personDataName = PersonDataNameTextBox.Text;
+            personUserData = PersonUserDataTextBox.Text;
+            PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
+            PersonDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
 
+            if (knownGroup != null && personDataName.Length > 0 && personUserData.Length > 0)
+            {
+                CreatePersonErrorText.Visibility = Visibility.Collapsed;
+                //Check if this person already exist
+                bool personAlreadyExist = false;
+                Person[] ppl = await GetKnownPeople();
+                foreach (Person p in ppl)
+                {
+                    if (p.Name == personName)
+                    {
+                        personAlreadyExist = true;
+                        PersonStatusTextBlock.Text = $"Person already exist: {p.Name} ID: {p.PersonId}";
+
+                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    }
+                }
+
+                if (!personAlreadyExist)
+                {
+                    await ApiCallAllowed(true);
+                    CreatePersonResult result = await faceServiceClient.CreatePersonAsync(personGroupId, personName);
+                    if (null != result && null != result.PersonId)
+                    {
+                        personId = result.PersonId;
+
+                        PersonStatusTextBlock.Text = "Created new person: " + result.PersonId;
+
+                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                    }
+                }
+            }
+            else
+            {
+                CreatePersonErrorText.Text = "Please provide a name above, and ensure that the above person group section has been completed.";
+                CreatePersonErrorText.Visibility = Visibility.Visible;
+            }
+        }
 
         private async void SubmitToAzureButton_ClickAsync(object sender, RoutedEventArgs e)
         {

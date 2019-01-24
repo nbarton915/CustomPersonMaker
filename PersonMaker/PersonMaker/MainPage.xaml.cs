@@ -187,7 +187,7 @@ namespace PersonMaker
             }
         }
 
-        private async void FetchPerson_Click(object sender, RoutedEventArgs e)
+        private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
@@ -244,48 +244,53 @@ namespace PersonMaker
         }
 
         //To Do: finish CreateUserDataButton
-        private async void CreateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
+        private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            personDataName = PersonDataNameTextBox.Text;
+            personDataName = knownPerson.Name;
             personUserData = PersonUserDataTextBox.Text;
             PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
-            PersonDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
 
             if (knownGroup != null && personDataName.Length > 0 && personUserData.Length > 0)
             {
-                CreatePersonErrorText.Visibility = Visibility.Collapsed;
+                UpdateUserDataErrorText.Visibility = Visibility.Collapsed;
                 //Check if this person already exist
                 bool personAlreadyExist = false;
                 Person[] ppl = await GetKnownPeople();
                 foreach (Person p in ppl)
                 {
-                    if (p.Name == personName)
+                    if (p.Name == personDataName)
                     {
                         personAlreadyExist = true;
-                        PersonStatusTextBlock.Text = $"Person already exist: {p.Name} ID: {p.PersonId}";
-
-                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
                     }
                 }
 
                 if (!personAlreadyExist)
                 {
+                    UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
+
+                    UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                }
+
+                if (personAlreadyExist)
+                {
                     await ApiCallAllowed(true);
-                    CreatePersonResult result = await faceServiceClient.CreatePersonAsync(personGroupId, personName);
-                    if (null != result && null != result.PersonId)
+                    await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, personUserData);
+
+                    Person[] people = await GetKnownPeople();
+                    var matchedPeople = people.Where(p => p.Name == personName);
+
+                    if (matchedPeople.Count() > 0)
                     {
-                        personId = result.PersonId;
+                        knownPerson = matchedPeople.FirstOrDefault();
 
-                        PersonStatusTextBlock.Text = "Created new person: " + result.PersonId;
-
-                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                        UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
                     }
                 }
             }
             else
             {
-                CreatePersonErrorText.Text = "Please provide a name above, and ensure that the above person group section has been completed.";
-                CreatePersonErrorText.Visibility = Visibility.Visible;
+                UpdateUserDataErrorText.Text = "There was a problem with the request. Please check that you have successfully Fetched a Person Group and Person and that you have entered valid User Data";
+                UpdateUserDataErrorText.Visibility = Visibility.Visible;
             }
         }
 

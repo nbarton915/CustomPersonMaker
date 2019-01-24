@@ -96,6 +96,12 @@
                     Width="200"
                     Height="30"
                     Click="CreatePersonButton_ClickAsync"/>
+                    <Button x:Name="FetchPersonButton"
+                    Margin="20, 5 ,10, 10"
+                    Content="Fetch a Person"
+                    Width="200"
+                    Height="30"
+                    Click="FetchPersonButton_ClickAsync"/>
                     <Button x:Name="DeletePersonButton"
                     Margin="20, 5 ,10, 10"
                     Content="Delete a Person"
@@ -116,15 +122,43 @@
                 </StackPanel>
 
                 <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="4. Using Windows 10 Cam App, capture some photos of a single person (min 10)"
+                    <TextBlock Text="4. Update the User Data of a known Person."
+                    Margin="20, 5 ,10, 10"
+                    TextWrapping="Wrap"/>
+                    <TextBox x:Name="PersonUserDataTextBox"
+                     Width="600"
+                     HorizontalAlignment="Left"
+                     Margin="20, 5 ,10, 10"
+                     PlaceholderText="Insert your Person User Data here"/>
+                    <Button x:Name="UpdateUserData"
+                    Margin="20, 5 ,10, 10"
+                    Content="Update a Person's User Data"
+                    Width="200"
+                    Height="30"
+                    Click="UpdateUserDataButton_ClickAsync"/>
+                    <TextBlock x:Name="UpdateUserDataStatusTextBlock"
+                    Text="- User Data status -"
+                    HorizontalAlignment="Left"
+                    Margin="20, 5 ,10, 10"
+                    Width="600"
+                    TextWrapping="Wrap"/>
+                    <TextBlock x:Name="UpdateUserDataErrorText"
+                    Visibility="Collapsed" 
+                    Text="" 
+                    Margin="20, 5 ,10, 10" 
+                    Foreground="Red"/>
+                </StackPanel>
+
+                <StackPanel Background="LightGray">
+                    <TextBlock Text="5. Using Windows 10 Cam App, capture some photos of a single person (min 10)"
                      HorizontalAlignment="Left"
                      Margin="20, 5 ,10, 10"
                      Width="600"
                      TextWrapping="Wrap"/>
                 </StackPanel>
 
-                <StackPanel Background="LightGray">
-                    <TextBlock Text="5. Click the button below to create and open the person folder. Drop the photos in it."
+                <StackPanel Background="WhiteSmoke">
+                    <TextBlock Text="6. Click the button below to create and open the person folder. Drop the photos in it."
                     Margin="20, 5 ,10, 10"
                     TextWrapping="Wrap"/>
                     <Button x:Name="CreateFolderButton"
@@ -140,8 +174,8 @@
                     Foreground="Red"/>
                 </StackPanel>
 
-                <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="6. If there are at least 6 valid photos, you can click below to submit to azure." 
+                <StackPanel Background="LightGray">
+                    <TextBlock Text="7. If there are at least 6 valid photos, you can click below to submit to azure." 
                        Margin="20, 5 ,10, 10"/>
                     <Button x:Name="SubmitToAzureButton"
                     Margin="20, 5 ,10, 10"
@@ -153,8 +187,8 @@
                        Margin="20, 5 ,10, 10"/>
                 </StackPanel>
 
-                <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="7. Use this button to train the Face API." 
+                <StackPanel Background="LightGray">
+                    <TextBlock Text="8. Use this button to train the Face API." 
                        Margin="20, 5 ,10, 10"/>
                     <Button x:Name="TrainButton"
                     Margin="20, 5 ,10, 10"

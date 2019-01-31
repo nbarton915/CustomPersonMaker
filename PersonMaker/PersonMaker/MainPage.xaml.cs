@@ -13,14 +13,21 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace PersonMaker
 {
+    public class UserData
+    {
+        public string UserDataLabel { get; set; }
+        public string UserDataValue { get; set; }
+    }
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
+    /// 
     public sealed partial class MainPage : Page
     {
         string authKey;
@@ -37,6 +44,8 @@ namespace PersonMaker
 
         string personUserData;
         string personDataName;
+        string jsonString;
+        List<UserData> userDataPayload = new List<UserData> { };
         private Person knownPerson;
 
         public MainPage()
@@ -208,6 +217,7 @@ namespace PersonMaker
                     knownPerson = matchedPeople.FirstOrDefault();
 
                     PersonStatusTextBlock.Text = "Found existing: " + knownPerson.Name;
+                    UpdateUserDataStatusTextBlock.Text = knownPerson.UserData;
                 }
 
                 if (null == knownPerson)
@@ -243,14 +253,27 @@ namespace PersonMaker
             }
         }
 
-        //To Do: finish CreateUserDataButton
+        //To Do: Change CreateUserDataButton Method to update again, after it has been updated once
         private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            personDataName = knownPerson.Name;
-            personUserData = PersonUserDataTextBox.Text;
-            PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
+            if (userDataPayload.Count <= 0)
+            {
+                personDataName = PersonUserDataNameTextBox.Text;
+                personUserData = PersonUserDataTextBox.Text;
 
-            if (knownGroup != null && personDataName.Length > 0 && personUserData.Length > 0)
+                if (personDataName.Length > 0 && personUserData.Length > 0)
+                {
+                    userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
+                }
+
+                jsonString = JsonConvert.SerializeObject(userDataPayload);
+                UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
+            }
+
+            PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
+            PersonUserDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
+
+            if (knownGroup != null && knownPerson.Name.Length > 0)
             {
                 UpdateUserDataErrorText.Visibility = Visibility.Collapsed;
                 //Check if this person already exist
@@ -258,7 +281,7 @@ namespace PersonMaker
                 Person[] ppl = await GetKnownPeople();
                 foreach (Person p in ppl)
                 {
-                    if (p.Name == personDataName)
+                    if (p.Name == knownPerson.Name)
                     {
                         personAlreadyExist = true;
                     }
@@ -274,7 +297,7 @@ namespace PersonMaker
                 if (personAlreadyExist)
                 {
                     await ApiCallAllowed(true);
-                    await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, personUserData);
+                    await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, jsonString);
 
                     Person[] people = await GetKnownPeople();
                     var matchedPeople = people.Where(p => p.Name == personName);
@@ -427,6 +450,47 @@ namespace PersonMaker
             {
                 CreatePersonErrorText.Text = "Cannot delete: No name has been provided.";
                 CreatePersonErrorText.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void AddNameValueToPayloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            personDataName = PersonUserDataNameTextBox.Text;
+            personUserData = PersonUserDataTextBox.Text;
+
+            if (personDataName.Length > 0 && personUserData.Length > 0)
+            {
+                userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
+            }
+
+            jsonString = JsonConvert.SerializeObject(userDataPayload);
+            UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
+        }
+        
+        private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            personUserData = "{}";
+
+            if (knownPerson.Name.Length <= 0)
+            {
+                UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
+
+                UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                await ApiCallAllowed(true);
+                await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, personUserData);
+
+                Person[] people = await GetKnownPeople();
+                var matchedPeople = people.Where(p => p.Name == personName);
+
+                if (matchedPeople.Count() > 0)
+                {
+                    knownPerson = matchedPeople.FirstOrDefault();
+
+                    UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. " + knownPerson.UserData;
+                }
             }
         }
 

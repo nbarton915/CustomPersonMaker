@@ -122,37 +122,37 @@
                 </StackPanel>
 
                 <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="4. Update the User Data of a known Person."
+                    <TextBlock Text="4. Add User Data by entering a label and value below and pressing the Prepare User Data Payload button. When all the information has been added, press the Upload to Azure button."
                     Margin="20, 5 ,10, 10"
                     TextWrapping="Wrap"/>
                     <TextBox x:Name="PersonUserDataNameTextBox"
                      Width="600"
                      HorizontalAlignment="Left"
                      Margin="20, 5 ,10, 10"
-                     PlaceholderText="Insert your Person User Data Label here"/>
+                     PlaceholderText="Insert Label here"/>
                     <TextBox x:Name="PersonUserDataTextBox"
                      Width="600"
                      HorizontalAlignment="Left"
                      Margin="20, 5 ,10, 10"
-                     PlaceholderText="Insert your Person User Data Value here"/>
+                     PlaceholderText="Insert Value here"/>
                     <Button x:Name="AddUserData"
                     Margin="20, 5 ,10, 10"
-                    Content="Add Label and Data"
+                    Content="Prepare User Data Payload"
                     Width="200"
                     Height="30"
                     Click="AddNameValueToPayloadButton_Click"/>
+                    <Button x:Name="UpdateUserData"
+                    Margin="20, 5 ,10, 10"
+                    Content="Upload Payload To Azure"
+                    Width="200"
+                    Height="30"
+                    Click="UpdateUserDataButton_ClickAsync"/>
                     <Button x:Name="DeleteUserData"
                     Margin="20, 5 ,10, 10"
                     Content="Delete User Data"
                     Width="200"
                     Height="30"
                     Click="DeleteUserDataButton_ClickAsync"/>
-                    <Button x:Name="UpdateUserData"
-                    Margin="20, 5 ,10, 10"
-                    Content="Updoad Person's User Data"
-                    Width="200"
-                    Height="30"
-                    Click="UpdateUserDataButton_ClickAsync"/>
                     <TextBlock x:Name="UpdateUserDataStatusTextBlock"
                     Text="- User Data status -"
                     HorizontalAlignment="Left"
@@ -164,6 +164,12 @@
                     Text="" 
                     Margin="20, 5 ,10, 10" 
                     Foreground="Red"/>
+                    <TextBlock x:Name="UpdateUserDataPayloadTextBlock"
+                    Text=""
+                    HorizontalAlignment="Left"
+                    Margin="20, 5 ,10, 10"
+                    Width="600"
+                    TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <StackPanel Background="LightGray">

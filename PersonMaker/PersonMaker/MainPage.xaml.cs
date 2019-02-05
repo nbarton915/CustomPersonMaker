@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+using System.Windows;
+using Microsoft.Win32;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -217,7 +219,15 @@ namespace PersonMaker
                     knownPerson = matchedPeople.FirstOrDefault();
 
                     PersonStatusTextBlock.Text = "Found existing: " + knownPerson.Name;
-                    UpdateUserDataStatusTextBlock.Text = knownPerson.UserData;
+                    try
+                    {
+                        UpdateUserDataStatusTextBlock.Text = "User Data for " + knownPerson.Name + ":";
+                        UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                    }
+                    catch
+                    {
+                        UpdateUserDataStatusTextBlock.Text = "No User Data";
+                    }
                 }
 
                 if (null == knownPerson)
@@ -464,7 +474,12 @@ namespace PersonMaker
             }
 
             jsonString = JsonConvert.SerializeObject(userDataPayload);
-            UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
+            UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: ";
+            UpdateUserDataPayloadTextBlock.Text = jsonString;
+            PersonUserDataNameTextBox.Text = "";
+            PersonUserDataTextBox.Text = "";
+
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
         }
         
         private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
@@ -489,7 +504,8 @@ namespace PersonMaker
                 {
                     knownPerson = matchedPeople.FirstOrDefault();
 
-                    UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. " + knownPerson.UserData;
+                    UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. ";
+                    UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
                 }
             }
         }

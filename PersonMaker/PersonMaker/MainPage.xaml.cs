@@ -26,6 +26,11 @@ namespace PersonMaker
         public string UserDataLabel { get; set; }
         public string UserDataValue { get; set; }
     }
+
+    public class Attributes
+    {
+        public List<UserData> Data { get; set; }
+    }
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -63,6 +68,85 @@ namespace PersonMaker
         /// <summary>
         /// Create a person group with ID and name provided if none can be found in the service.
         /// </summary>
+        /// 
+
+        private void AddNameValueToPayloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            personDataName = PersonUserDataNameTextBox.Text;
+            personUserData = PersonUserDataTextBox.Text;
+
+            if (personDataName.Length > 0 && personUserData.Length > 0)
+            {
+                userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
+            }
+
+            jsonString = JsonConvert.SerializeObject(userDataPayload);
+            UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: ";
+            UpdateUserDataPayloadTextBlock.Text = jsonString;
+            PersonUserDataNameTextBox.Text = "";
+            PersonUserDataTextBox.Text = "";
+
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+        }
+
+        private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            if (personName.Length > 0 && personId != Guid.Empty)
+            {
+                CreateFolderErrorText.Visibility = Visibility.Collapsed;
+                StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
+                personFolder = await picturesFolder.CreateFolderAsync(personName, CreationCollisionOption.OpenIfExists);
+                await Launcher.LaunchFolderAsync(personFolder);
+            }
+            else
+            {
+                CreateFolderErrorText.Text = "You must have created a person in section 3.";
+                CreateFolderErrorText.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            personName = PersonNameTextBox.Text;
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            if (knownGroup != null && personName.Length > 0)
+            {
+                CreatePersonErrorText.Visibility = Visibility.Collapsed;
+                //Check if this person already exist
+                bool personAlreadyExist = false;
+                Person[] ppl = await GetKnownPeople();
+                foreach (Person p in ppl)
+                {
+                    if (p.Name == personName)
+                    {
+                        personAlreadyExist = true;
+                        PersonStatusTextBlock.Text = $"Person already exist: {p.Name} ID: {p.PersonId}";
+
+                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    }
+                }
+
+                if (!personAlreadyExist)
+                {
+                    await ApiCallAllowed(true);
+                    CreatePersonResult result = await faceServiceClient.CreatePersonAsync(personGroupId, personName);
+                    if (null != result && null != result.PersonId)
+                    {
+                        personId = result.PersonId;
+
+                        PersonStatusTextBlock.Text = "Created new person: " + result.PersonId;
+
+                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                    }
+                }
+            }
+            else
+            {
+                CreatePersonErrorText.Text = "Please provide a name above, and ensure that the above person group section has been completed.";
+                CreatePersonErrorText.Visibility = Visibility.Visible;
+            }
+        }
+
         private async void CreatePersonGroupButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personGroupId = PersonGroupIdTextBox.Text;
@@ -116,6 +200,140 @@ namespace PersonMaker
             }
         }
 
+        private async void DeletePersonButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            personName = PersonNameTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(personName) == false)
+            {
+                CreatePersonErrorText.Visibility = Visibility.Collapsed;
+                bool personExist = false;
+                Person[] ppl = await GetKnownPeople();
+                foreach (Person p in ppl)
+                {
+                    if (p.Name == personName)
+                    {
+                        personExist = true;
+                        PersonStatusTextBlock.Text = $"Deleting person: {p.Name} ID: {p.PersonId}";
+                        await RemovePerson(p);
+                    }
+                }
+                if (!personExist)
+                {
+                    PersonStatusTextBlock.Text = $"No persons found to delete.";
+                }
+            }
+            else
+            {
+                CreatePersonErrorText.Text = "Cannot delete: No name has been provided.";
+                CreatePersonErrorText.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            personUserData = "{}";
+
+            if (knownPerson.Name.Length <= 0)
+            {
+                UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
+
+                UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            else
+            {
+                await ApiCallAllowed(true);
+                await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, personUserData);
+
+                Person[] people = await GetKnownPeople();
+                var matchedPeople = people.Where(p => p.Name == personName);
+
+                if (matchedPeople.Count() > 0)
+                {
+                    knownPerson = matchedPeople.FirstOrDefault();
+
+                    UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. ";
+                    UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                }
+            }
+        }
+
+        private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            personName = PersonNameTextBox.Text;
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            authKey = AuthKeyTextBox.Text;
+
+            await ApiCallAllowed(true);
+            faceServiceClient = new FaceServiceClient(authKey);
+
+            if (null != faceServiceClient && null != knownGroup && personName.Length > 0)
+            {
+                // You may experience issues with this below call, if you are attempting connection with
+                // a service location other than 'West US'
+                Person[] people = await GetKnownPeople();
+                var matchedPeople = people.Where(p => p.Name == personName);
+
+                if (matchedPeople.Count() > 0)
+                {
+                    knownPerson = matchedPeople.FirstOrDefault();
+
+                    PersonStatusTextBlock.Text = "Found existing: " + knownPerson.Name;
+
+                    //Attributes UserAttributes = new Attributes();
+                    //var json = JsonConvert.SerializeObject(knownPerson.UserData);
+                    //var json2 = JsonConvert.DeserializeObject(json);
+                    
+
+                    //Debug.WriteLine(json);
+                    //UserData UserAttributes = new UserData();
+                    //UserAttributes.Data = JsonConvert.DeserializeObject<List<UserData>>(json);
+
+                    try
+                    {
+                        Attributes attributes = new Attributes();
+                        attributes.Data = JsonConvert.DeserializeObject<List<UserData>>(knownPerson.UserData);
+                        //Debug.WriteLine(json);
+                        //Attributes UserAttributes = new Attributes();
+                        //UserAttributes = JsonConvert.DeserializeObject<Attributes>(json);
+
+                        foreach (var item in attributes.Data)
+                        {
+                            Debug.WriteLine("Label: {0}, Value: {1}", item.UserDataLabel.ToString(), item.UserDataValue.ToString());
+                        }
+                    }
+                    catch
+                    {
+                        Debug.WriteLine("There was a problem deserializing the User Data");
+                    }
+
+                    try
+                    {
+                        UpdateUserDataStatusTextBlock.Text = "User Data for " + knownPerson.Name + ":";
+                        UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                    }
+                    catch
+                    {
+                        UpdateUserDataStatusTextBlock.Text = "No User Data";
+                    }
+                }
+
+                if (null == knownPerson)
+                {
+                    PersonStatusTextBlock.Text = "Could not find group: " + knownPerson.Name;
+                }
+
+                if (PersonStatusTextBlock.Text.ToLower().Contains("found"))
+                {
+                    PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                }
+                else
+                {
+                    PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                }
+            }
+        }
+
         private async void FetchPersonGroup_Click(object sender, RoutedEventArgs e)
         {
             personGroupId = PersonGroupIdTextBox.Text;
@@ -153,177 +371,6 @@ namespace PersonMaker
                 {
                     PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
                 }
-            }
-        }
-
-        private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            personName = PersonNameTextBox.Text;
-            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            if (knownGroup != null && personName.Length > 0)
-            {
-                CreatePersonErrorText.Visibility = Visibility.Collapsed;
-                //Check if this person already exist
-                bool personAlreadyExist = false;
-                Person[] ppl = await GetKnownPeople();
-                foreach (Person p in ppl)
-                {
-                    if (p.Name == personName)
-                    {
-                        personAlreadyExist = true;
-                        PersonStatusTextBlock.Text = $"Person already exist: {p.Name} ID: {p.PersonId}";
-
-                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-                    }
-                }
-
-                if (!personAlreadyExist)
-                {
-                    await ApiCallAllowed(true);
-                    CreatePersonResult result = await faceServiceClient.CreatePersonAsync(personGroupId, personName);
-                    if (null != result && null != result.PersonId)
-                    {
-                        personId = result.PersonId;
-
-                        PersonStatusTextBlock.Text = "Created new person: " + result.PersonId;
-
-                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
-                    }
-                }
-            }
-            else
-            {
-                CreatePersonErrorText.Text = "Please provide a name above, and ensure that the above person group section has been completed.";
-                CreatePersonErrorText.Visibility = Visibility.Visible;
-            }
-        }
-
-        private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            personName = PersonNameTextBox.Text;
-            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            authKey = AuthKeyTextBox.Text;
-
-            await ApiCallAllowed(true);
-            faceServiceClient = new FaceServiceClient(authKey);
-
-            if (null != faceServiceClient && null != knownGroup && personName.Length > 0)
-            {
-                // You may experience issues with this below call, if you are attempting connection with
-                // a service location other than 'West US'
-                Person[] people = await GetKnownPeople();
-                var matchedPeople = people.Where(p => p.Name == personName);
-
-                if (matchedPeople.Count() > 0)
-                {
-                    knownPerson = matchedPeople.FirstOrDefault();
-
-                    PersonStatusTextBlock.Text = "Found existing: " + knownPerson.Name;
-                    try
-                    {
-                        UpdateUserDataStatusTextBlock.Text = "User Data for " + knownPerson.Name + ":";
-                        UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
-                    }
-                    catch
-                    {
-                        UpdateUserDataStatusTextBlock.Text = "No User Data";
-                    }
-                }
-
-                if (null == knownPerson)
-                {
-                    PersonStatusTextBlock.Text = "Could not find group: " + knownPerson.Name;
-                }
-
-                if (PersonStatusTextBlock.Text.ToLower().Contains("found"))
-                {
-                    PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
-                }
-                else
-                {
-                    PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-                }
-            }
-        }
-
-
-        private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            if (personName.Length > 0 && personId != Guid.Empty)
-            {
-                CreateFolderErrorText.Visibility = Visibility.Collapsed;
-                StorageFolder picturesFolder = KnownFolders.PicturesLibrary;
-                personFolder = await picturesFolder.CreateFolderAsync(personName, CreationCollisionOption.OpenIfExists);
-                await Launcher.LaunchFolderAsync(personFolder);
-            }
-            else
-            {
-                CreateFolderErrorText.Text = "You must have created a person in section 3.";
-                CreateFolderErrorText.Visibility = Visibility.Visible;
-            }
-        }
-
-        //To Do: Change CreateUserDataButton Method to update again, after it has been updated once
-        private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            if (userDataPayload.Count <= 0)
-            {
-                personDataName = PersonUserDataNameTextBox.Text;
-                personUserData = PersonUserDataTextBox.Text;
-
-                if (personDataName.Length > 0 && personUserData.Length > 0)
-                {
-                    userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
-                }
-
-                jsonString = JsonConvert.SerializeObject(userDataPayload);
-                UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
-            }
-
-            PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
-            PersonUserDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
-
-            if (knownGroup != null && knownPerson.Name.Length > 0)
-            {
-                UpdateUserDataErrorText.Visibility = Visibility.Collapsed;
-                //Check if this person already exist
-                bool personAlreadyExist = false;
-                Person[] ppl = await GetKnownPeople();
-                foreach (Person p in ppl)
-                {
-                    if (p.Name == knownPerson.Name)
-                    {
-                        personAlreadyExist = true;
-                    }
-                }
-
-                if (!personAlreadyExist)
-                {
-                    UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
-
-                    UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-                }
-
-                if (personAlreadyExist)
-                {
-                    await ApiCallAllowed(true);
-                    await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, jsonString);
-
-                    Person[] people = await GetKnownPeople();
-                    var matchedPeople = people.Where(p => p.Name == personName);
-
-                    if (matchedPeople.Count() > 0)
-                    {
-                        knownPerson = matchedPeople.FirstOrDefault();
-
-                        UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
-                    }
-                }
-            }
-            else
-            {
-                UpdateUserDataErrorText.Text = "There was a problem with the request. Please check that you have successfully Fetched a Person Group and Person and that you have entered valid User Data";
-                UpdateUserDataErrorText.Visibility = Visibility.Visible;
             }
         }
 
@@ -433,80 +480,67 @@ namespace PersonMaker
             }
         }
 
-        private async void DeletePersonButton_ClickAsync(object sender, RoutedEventArgs e)
+        //To Do: Change CreateUserDataButton Method to update again, after it has been updated once
+        private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            personName = PersonNameTextBox.Text;
-
-            if (string.IsNullOrWhiteSpace(personName) == false)
+            if (userDataPayload.Count <= 0)
             {
-                CreatePersonErrorText.Visibility = Visibility.Collapsed;
-                bool personExist = false;
+                personDataName = PersonUserDataNameTextBox.Text;
+                personUserData = PersonUserDataTextBox.Text;
+
+                if (personDataName.Length > 0 && personUserData.Length > 0)
+                {
+                    userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
+                }
+
+                jsonString = JsonConvert.SerializeObject(userDataPayload);
+                UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
+            }
+
+            PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
+            PersonUserDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
+
+            if (knownGroup != null && knownPerson.Name.Length > 0)
+            {
+                UpdateUserDataErrorText.Visibility = Visibility.Collapsed;
+                //Check if this person already exist
+                bool personAlreadyExist = false;
                 Person[] ppl = await GetKnownPeople();
                 foreach (Person p in ppl)
                 {
-                    if (p.Name == personName)
+                    if (p.Name == knownPerson.Name)
                     {
-                        personExist = true;
-                        PersonStatusTextBlock.Text = $"Deleting person: {p.Name} ID: {p.PersonId}";
-                        await RemovePerson(p);
+                        personAlreadyExist = true;
                     }
                 }
-                if (!personExist)
+
+                if (!personAlreadyExist)
                 {
-                    PersonStatusTextBlock.Text = $"No persons found to delete.";
+                    UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
+
+                    UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                }
+
+                if (personAlreadyExist)
+                {
+                    await ApiCallAllowed(true);
+                    await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, jsonString);
+
+                    Person[] people = await GetKnownPeople();
+                    var matchedPeople = people.Where(p => p.Name == personName);
+
+                    if (matchedPeople.Count() > 0)
+                    {
+                        knownPerson = matchedPeople.FirstOrDefault();
+
+                        UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
+                    }
                 }
             }
             else
             {
-                CreatePersonErrorText.Text = "Cannot delete: No name has been provided.";
-                CreatePersonErrorText.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void AddNameValueToPayloadButton_Click(object sender, RoutedEventArgs e)
-        {
-            personDataName = PersonUserDataNameTextBox.Text;
-            personUserData = PersonUserDataTextBox.Text;
-
-            if (personDataName.Length > 0 && personUserData.Length > 0)
-            {
-                userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
-            }
-
-            jsonString = JsonConvert.SerializeObject(userDataPayload);
-            UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: ";
-            UpdateUserDataPayloadTextBlock.Text = jsonString;
-            PersonUserDataNameTextBox.Text = "";
-            PersonUserDataTextBox.Text = "";
-
-            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
-        }
-        
-        private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            personUserData = "{}";
-
-            if (knownPerson.Name.Length <= 0)
-            {
-                UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
-
-                UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
-            }
-            else
-            {
-                await ApiCallAllowed(true);
-                await faceServiceClient.UpdatePersonAsync(personGroupId, knownPerson.PersonId, knownPerson.Name, personUserData);
-
-                Person[] people = await GetKnownPeople();
-                var matchedPeople = people.Where(p => p.Name == personName);
-
-                if (matchedPeople.Count() > 0)
-                {
-                    knownPerson = matchedPeople.FirstOrDefault();
-
-                    UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. ";
-                    UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
-                }
+                UpdateUserDataErrorText.Text = "There was a problem with the request. Please check that you have successfully Fetched a Person Group and Person and that you have entered valid User Data";
+                UpdateUserDataErrorText.Visibility = Visibility.Visible;
             }
         }
 

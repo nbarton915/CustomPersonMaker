@@ -233,6 +233,7 @@ namespace PersonMaker
         private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personUserData = "{}";
+            userDataPayload.Clear();
 
             if (knownPerson.Name.Length <= 0)
             {
@@ -300,6 +301,7 @@ namespace PersonMaker
                         foreach (var item in attributes.Data)
                         {
                             Debug.WriteLine("Label: {0}, Value: {1}", item.UserDataLabel.ToString(), item.UserDataValue.ToString());
+                            userDataPayload.Add(new UserData() { UserDataLabel = item.UserDataLabel.ToString(), UserDataValue = item.UserDataValue.ToString() });
                         }
                     }
                     catch
@@ -483,20 +485,18 @@ namespace PersonMaker
         //To Do: Change CreateUserDataButton Method to update again, after it has been updated once
         private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            if (userDataPayload.Count <= 0)
+            personDataName = PersonUserDataNameTextBox.Text;
+            personUserData = PersonUserDataTextBox.Text;
+
+            if (personDataName.Length > 0 && personUserData.Length > 0)
             {
-                personDataName = PersonUserDataNameTextBox.Text;
-                personUserData = PersonUserDataTextBox.Text;
-
-                if (personDataName.Length > 0 && personUserData.Length > 0)
-                {
-                    userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
-                }
-
-                jsonString = JsonConvert.SerializeObject(userDataPayload);
-                UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
+                userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
             }
 
+            jsonString = JsonConvert.SerializeObject(userDataPayload);
+            UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
+            PersonUserDataNameTextBox.Text = "";
+            PersonUserDataTextBox.Text = "";
             PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
             PersonUserDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
 

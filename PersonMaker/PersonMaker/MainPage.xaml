@@ -165,7 +165,7 @@
                     Margin="20, 5 ,10, 10" 
                     Foreground="Red"/>
                     <TextBlock x:Name="UpdateUserDataPayloadTextBlock"
-                    Text=""
+                    Text="- User Data Payload -"
                     HorizontalAlignment="Left"
                     Margin="20, 5 ,10, 10"
                     Width="600"

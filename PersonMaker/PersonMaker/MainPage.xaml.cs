@@ -254,7 +254,14 @@ namespace PersonMaker
                     knownPerson = matchedPeople.FirstOrDefault();
 
                     UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. ";
-                    UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                    if (knownPerson.UserData == "{}")
+                    {
+                        UpdateUserDataPayloadTextBlock.Text = "No Payload...";
+                    }
+                    else
+                    {
+                        UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                    }
                 }
             }
         }
@@ -311,8 +318,16 @@ namespace PersonMaker
 
                     try
                     {
-                        UpdateUserDataStatusTextBlock.Text = "User Data for " + knownPerson.Name + ":";
-                        UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                        if (knownPerson.UserData == "{}")
+                        {
+                            UpdateUserDataStatusTextBlock.Text = knownPerson.Name + " does not have user data.";
+                            UpdateUserDataPayloadTextBlock.Text = "No payload";
+                        }
+                        else
+                        {
+                            UpdateUserDataStatusTextBlock.Text = "User Data for " + knownPerson.Name + ":";
+                            UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                        }
                     }
                     catch
                     {
@@ -534,6 +549,7 @@ namespace PersonMaker
                         knownPerson = matchedPeople.FirstOrDefault();
 
                         UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
+                        UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                     }
                 }
             }

@@ -89,6 +89,11 @@ namespace PersonMaker
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
         }
 
+        private async void BulkUploadButton_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("Bulk Upload Button");
+        }
+
         private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (personName.Length > 0 && personId != Guid.Empty)

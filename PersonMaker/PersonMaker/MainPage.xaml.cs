@@ -14,13 +14,19 @@ using Windows.UI.Xaml.Media;
 using Windows.UI;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
-using System.Windows;
-using Microsoft.Win32;
+using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace PersonMaker
-{
+{ 
+    public class UploadPerson
+    {
+        public string Name { get; set; }
+        public List<UserData> Data { get; set; }
+    }
+
     public class UserData
     {
         public string UserDataLabel { get; set; }
@@ -92,6 +98,73 @@ namespace PersonMaker
         private async void BulkUploadButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("Bulk Upload Button");
+
+            // Configure open file dialog box
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Desktop;
+            picker.FileTypeFilter.Add(".csv");
+            picker.FileTypeFilter.Add(".txt");
+
+            Windows.Storage.StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                // Application now has read/write access to the picked file
+                BulkUploadStatusTextBlock.Text = "Picked file: " + file.Name;
+            }
+            else
+            {
+                BulkUploadStatusTextBlock.Text = "Operation cancelled.";
+            }
+
+            List<UploadPerson> people = new List<UploadPerson>();
+
+            var rawText = await Windows.Storage.FileIO.ReadTextAsync(file);
+            var records = rawText.Split('\n');
+            List<String> labels = new List<string>();
+            foreach (var record in records)
+            {
+                UploadPerson psn = new UploadPerson();
+                var fields = record.Split(',');
+                if (record.Length <= 0)
+                {
+                    break;
+                }
+                psn.Name = fields[1];
+                int i = 0;
+                List<UserData> lstUserData = new List<UserData>();
+                foreach (var field in fields)
+                {
+                    //Debug.WriteLine(field);
+                    if (i > 1)
+                    {
+                        if (people.Count() <= 0)
+                        {
+                            labels.Add(field);
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Adding User Data");
+                            lstUserData.Add(new UserData() { UserDataLabel = labels[i - 2], UserDataValue = field });
+                        }
+                    }
+                    i += 1;
+                }
+                psn.Data = lstUserData;
+                people.Add(psn);
+            }
+
+            foreach (var pson in people)
+            {
+                Debug.WriteLine(pson.Name);
+                if (pson.Data != null)
+                {
+                    foreach (var lst in pson.Data)
+                    {
+                        Debug.WriteLine(lst.UserDataLabel + " " + lst.UserDataValue);
+                    }
+                }
+            }
         }
 
         private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)

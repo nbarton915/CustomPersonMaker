@@ -327,6 +327,7 @@ namespace PersonMaker
                     {
                         personExist = true;
                         PersonStatusTextBlock.Text = $"Deleting person: {p.Name} ID: {p.PersonId}";
+                        PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                         await RemovePerson(p);
                     }
                 }
@@ -368,7 +369,7 @@ namespace PersonMaker
                     UpdateUserDataStatusTextBlock.Text = "User Data for Person: " + knownPerson.Name + " has been deleted. ";
                     if (knownPerson.UserData == "{}")
                     {
-                        UpdateUserDataPayloadTextBlock.Text = "No Payload...";
+                        UpdateUserDataPayloadTextBlock.Text = "No User Data...";
                     }
                     else
                     {

@@ -155,13 +155,13 @@
                      PlaceholderText="Insert Value here"/>
                     <Button x:Name="AddUserData"
                     Margin="20, 5 ,10, 10"
-                    Content="Prepare User Data Payload"
+                    Content="Add To List"
                     Width="200"
                     Height="30"
                     Click="AddNameValueToPayloadButton_Click"/>
                     <Button x:Name="UpdateUserData"
                     Margin="20, 5 ,10, 10"
-                    Content="Upload Payload To Azure"
+                    Content="Submit User Data"
                     Width="200"
                     Height="30"
                     Click="UpdateUserDataButton_ClickAsync"/>

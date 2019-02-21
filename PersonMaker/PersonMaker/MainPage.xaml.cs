@@ -23,6 +23,7 @@ namespace PersonMaker
 { 
     public class UploadPerson
     {
+        public string PersonGroup { get; set; }
         public string Name { get; set; }
         public List<UserData> Data { get; set; }
     }
@@ -130,13 +131,14 @@ namespace PersonMaker
                 {
                     break;
                 }
-                psn.Name = fields[1];
+                psn.PersonGroup = fields[0];
+                psn.Name = fields[2];
                 int i = 0;
                 List<UserData> lstUserData = new List<UserData>();
                 foreach (var field in fields)
                 {
                     //Debug.WriteLine(field);
-                    if (i > 1)
+                    if (i > 2)
                     {
                         if (people.Count() <= 0)
                         {
@@ -145,7 +147,7 @@ namespace PersonMaker
                         else
                         {
                             Debug.WriteLine("Adding User Data");
-                            lstUserData.Add(new UserData() { UserDataLabel = labels[i - 2], UserDataValue = field });
+                            lstUserData.Add(new UserData() { UserDataLabel = labels[i - 3], UserDataValue = field });
                         }
                     }
                     i += 1;
@@ -156,7 +158,39 @@ namespace PersonMaker
 
             foreach (var pson in people)
             {
+                //reset knownPerson for a successful FetchPerson check later on
+                knownPerson = null;
+                Debug.WriteLine(pson.PersonGroup);
                 Debug.WriteLine(pson.Name);
+
+                PersonGroupIdTextBox.Text = pson.PersonGroup;
+
+                try
+                {
+                    if (pson.Name != "name")
+                    {
+                        FetchPersonGroup_Click(this, new RoutedEventArgs());
+                        await Task.Delay(TimeSpan.FromSeconds(1));
+                        PersonNameTextBox.Text = pson.Name;
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine($"There was a problem with Fetching the person group {pson.PersonGroup}.");
+                }
+
+                try
+                {
+                    if (pson.Name != "name")
+                    {
+                        CreatePersonButton_ClickAsync(this, new RoutedEventArgs());
+                    }
+                }
+                catch
+                {
+                    Debug.WriteLine($"There was a problem with Creating the person {pson.Name}.");
+                }
+
                 if (pson.Data != null)
                 {
                     foreach (var lst in pson.Data)

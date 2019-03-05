@@ -326,9 +326,10 @@ namespace PersonMaker
                     if (p.Name == personName)
                     {
                         personExist = true;
-                        PersonStatusTextBlock.Text = $"Deleting person: {p.Name} ID: {p.PersonId}";
+                    
                         PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                         await RemovePerson(p);
+                        PersonStatusTextBlock.Text = $"Deleted: {p.Name} ID: {p.PersonId}";
                     }
                 }
                 if (!personExist)
@@ -450,7 +451,7 @@ namespace PersonMaker
 
                 if (null == knownPerson)
                 {
-                    PersonStatusTextBlock.Text = "Could not find group: " + knownPerson.Name;
+                    PersonStatusTextBlock.Text = "Could not find group: " + personName;
                 }
 
                 if (PersonStatusTextBlock.Text.ToLower().Contains("found"))
@@ -474,33 +475,49 @@ namespace PersonMaker
             await ApiCallAllowed(true);
             faceServiceClient = new FaceServiceClient(authKey);
 
-            if (null != faceServiceClient)
+            if (null != faceServiceClient && authKey != "")
             {
-                // You may experience issues with this below call, if you are attempting connection with
-                // a service location other than 'West US'
-                PersonGroup[] groups = await faceServiceClient.ListPersonGroupsAsync();
-                var matchedGroups = groups.Where(p => p.PersonGroupId == personGroupId);
-
-                if (matchedGroups.Count() > 0)
+ 
+                try
                 {
-                    knownGroup = matchedGroups.FirstOrDefault();
+                    // You may experience issues with this below call, if you are attempting connection with
+                    // a service location other than 'West US'
+                    PersonGroup[] groups = await faceServiceClient.ListPersonGroupsAsync();
+                    var matchedGroups = groups.Where(p => p.PersonGroupId == personGroupId);
 
-                    PersonGroupStatusTextBlock.Text = "Found existing: " + knownGroup.Name;
+
+                    if (matchedGroups.Count() > 0)
+                    {
+                        knownGroup = matchedGroups.FirstOrDefault();
+
+                        PersonGroupStatusTextBlock.Text = "Found existing: " + knownGroup.Name;
+                    }
+
+                    if (null == knownGroup)
+                    {
+                        PersonGroupStatusTextBlock.Text = "Could not find group: " + personGroupId;
+                    }
+
+                    if (PersonGroupStatusTextBlock.Text.ToLower().Contains("found"))
+                    {
+                        PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                    }
+                    else
+                    {
+                        PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    }
+
                 }
-
-                if (null == knownGroup)
+                catch
                 {
-                    PersonGroupStatusTextBlock.Text = "Could not find group: " + knownGroup.Name;
-                }
-
-                if (PersonGroupStatusTextBlock.Text.ToLower().Contains("found"))
-                {
-                    PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
-                }
-                else
-                {
+                    PersonGroupStatusTextBlock.Text = "Verify that your Group ID and API Key are correct.";
                     PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
                 }
+            }
+            else
+            {
+                PersonGroupStatusTextBlock.Text = "Verify that your Group ID and API Key are correct.";
+                PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
             }
         }
 

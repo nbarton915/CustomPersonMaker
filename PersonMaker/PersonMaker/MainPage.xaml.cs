@@ -451,7 +451,7 @@ namespace PersonMaker
 
                 if (null == knownPerson)
                 {
-                    PersonStatusTextBlock.Text = "Could not find group: " + personName;
+                    PersonStatusTextBlock.Text = "Could not find person: " + personName;
                 }
 
                 if (PersonStatusTextBlock.Text.ToLower().Contains("found"))

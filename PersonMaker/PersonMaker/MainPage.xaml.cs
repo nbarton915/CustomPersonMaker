@@ -28,6 +28,13 @@ namespace PersonMaker
         public List<UserData> Data { get; set; }
     }
 
+    public class DownloadPerson
+    {
+        public string PersonGroup { get; set; }
+        public string Name { get; set; }
+        public List<UserData> Data { get; set; }
+    }
+
     public class UserData
     {
         public string UserDataLabel { get; set; }
@@ -154,6 +161,17 @@ namespace PersonMaker
                 }
                 psn.Data = lstUserData;
                 people.Add(psn);
+            }
+
+            authKey = AuthKeyTextBox.Text;
+            await ApiCallAllowed(true);
+            faceServiceClient = new FaceServiceClient(authKey);
+            var result = await faceServiceClient.ListPersonsAsync("testing");
+            
+            foreach (var r in result)
+            {
+                Debug.WriteLine(r.Name);
+                Debug.WriteLine(r.UserData);
             }
 
             foreach (var pson in people)
@@ -381,6 +399,8 @@ namespace PersonMaker
 
         private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            userDataPayload = null;
+
             personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             authKey = AuthKeyTextBox.Text;

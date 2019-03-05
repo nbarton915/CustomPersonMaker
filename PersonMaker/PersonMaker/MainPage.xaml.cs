@@ -237,6 +237,7 @@ namespace PersonMaker
 
         private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            UpdateUserDataPayloadTextBlock.Text = "";
             personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             if (knownGroup != null && personName.Length > 0)
@@ -333,6 +334,7 @@ namespace PersonMaker
         private async void DeletePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personName = PersonNameTextBox.Text;
+            UpdateUserDataPayloadTextBlock.Text = "";
 
             if (string.IsNullOrWhiteSpace(personName) == false)
             {
@@ -402,6 +404,7 @@ namespace PersonMaker
         {
             userDataPayload = null;
 
+            UpdateUserDataPayloadTextBlock.Text = "";
             personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             authKey = AuthKeyTextBox.Text;

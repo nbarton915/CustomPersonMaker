@@ -718,7 +718,7 @@ namespace PersonMaker
             PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
             PersonUserDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
 
-            if (knownGroup != null && knownPerson.Name.Length > 0)
+            if (knownGroup != null && knownPerson != null && knownPerson.Name.Length > 0)
             {
                 UpdateUserDataErrorText.Visibility = Visibility.Collapsed;
                 //Check if this person already exist

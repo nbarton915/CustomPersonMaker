@@ -88,6 +88,10 @@ namespace PersonMaker
         {
             personDataName = PersonUserDataNameTextBox.Text;
             personUserData = PersonUserDataTextBox.Text;
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
             if (personDataName.Length > 0 && personUserData.Length > 0)
             {
@@ -238,6 +242,12 @@ namespace PersonMaker
         private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             UpdateUserDataPayloadTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             if (knownGroup != null && personName.Length > 0)
@@ -282,6 +292,14 @@ namespace PersonMaker
         {
             personGroupId = PersonGroupIdTextBox.Text;
             personGroupName = PersonGroupNameTextBox.Text;
+            PersonStatusTextBlock.Text = "";
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            UpdateUserDataStatusTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             authKey = AuthKeyTextBox.Text;
 
@@ -335,6 +353,14 @@ namespace PersonMaker
         {
             personName = PersonNameTextBox.Text;
             UpdateUserDataPayloadTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+
+            userDataPayload.Clear();
 
             if (string.IsNullOrWhiteSpace(personName) == false)
             {
@@ -368,6 +394,10 @@ namespace PersonMaker
         {
             personUserData = "{}";
             userDataPayload.Clear();
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
             if (knownPerson.Name.Length <= 0)
             {
@@ -403,7 +433,12 @@ namespace PersonMaker
         private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             userDataPayload.Clear();
-
+            UpdateUserDataStatusTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             UpdateUserDataPayloadTextBlock.Text = "";
             personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
@@ -492,6 +527,14 @@ namespace PersonMaker
         {
             personGroupId = PersonGroupIdTextBox.Text;
             personGroupName = PersonGroupNameTextBox.Text;
+            PersonStatusTextBlock.Text = "";
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            UpdateUserDataStatusTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             authKey = AuthKeyTextBox.Text;
 
@@ -548,6 +591,8 @@ namespace PersonMaker
         {
             string successfullySubmitted = string.Empty;
             SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
             int imageCounter = 0;
             if (null != personFolder)
@@ -655,6 +700,10 @@ namespace PersonMaker
         {
             personDataName = PersonUserDataNameTextBox.Text;
             personUserData = PersonUserDataTextBox.Text;
+            SubmissionStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
             if (personDataName.Length > 0 && personUserData.Length > 0)
             {

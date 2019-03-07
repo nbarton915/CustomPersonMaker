@@ -402,7 +402,7 @@ namespace PersonMaker
 
         private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
-            userDataPayload = null;
+            userDataPayload.Clear();
 
             UpdateUserDataPayloadTextBlock.Text = "";
             personName = PersonNameTextBox.Text;

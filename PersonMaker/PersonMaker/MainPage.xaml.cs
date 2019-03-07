@@ -753,6 +753,8 @@ namespace PersonMaker
 
                         UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
                         UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+                        UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                    
                     }
                 }
             }

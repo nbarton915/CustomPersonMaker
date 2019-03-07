@@ -279,6 +279,7 @@ namespace PersonMaker
 
                         PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                     }
+                    FetchPersonButton_ClickAsync(this, new RoutedEventArgs());
                 }
             }
             else

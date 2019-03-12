@@ -713,7 +713,7 @@ namespace PersonMaker
             }
 
             ThrottlingActive.Foreground = new SolidColorBrush(throttleActive == true ? Colors.Red : Colors.Green);
-            ThrottlingActive.Text = string.Format("Throttling Status: {0}", throttleActive == true ? "ACTIVE!" : "IN-ACTIVE");
+            ThrottlingActive.Text = string.Format("Status: {0}", throttleActive == true ? "THROTTLING!" : "NOT THROTTLING");
         }
 
         #endregion

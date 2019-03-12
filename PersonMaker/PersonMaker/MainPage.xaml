@@ -14,16 +14,16 @@
                        FontSize="30"
                        Margin="20, 10 ,10, 10"/>
                 <TextBlock x:Name="ThrottlingActive" 
-                           Text="Throttling Status: IN-ACTIVE" 
+                           Text="Status: NOT THROTTLING" 
                            Foreground="Green"
                            FontWeight="Bold"
                            FontSize="18"
                            Margin="20, 0 ,10, 0"/>
-                <TextBlock Text="To create a new Person with Azure Face Recognition API:" 
+                <TextBlock Text="To work with Azure Face Recognition API:" 
                        Margin="20, 10 ,10, 10"/>
 
                 <StackPanel Background="LightGray">
-                    <TextBlock Text="1. Insert your Face Recognition Key here (it will be deleted when you close this app):"
+                    <TextBlock Text="1. Insert your Face Recognition Key (it will be deleted when you close this app)."
                        HorizontalAlignment="Left"
                        Margin="20, 5 ,10, 10"
                        Width="600"
@@ -36,7 +36,7 @@
                 </StackPanel>
 
                 <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="2. To create or fetch a Person Group, insert the Person Group Id here:"
+                    <TextBlock Text="2. To create or fetch a Person Group, insert the Person Group Id."
                        HorizontalAlignment="Left"
                        Margin="20, 5 ,10, 10"
                        Width="600"
@@ -53,18 +53,18 @@
                      PlaceholderText="Insert your Person Group Name here"/>
                     <Button x:Name="CreatePersonGroupButton"
                     Margin="20, 5 ,10, 10"
-                    Content="Create a Person Group"
+                    Content="Create Person Group"
                     Width="200"
                     Height="30"
                     Click="CreatePersonGroupButton_ClickAsync"/>
                     <Button x:Name="FetchPersonGroup"
                     Margin="20, 5 ,10, 10"
-                    Content="Fetch a Known Group"
+                    Content="Fetch Existing Group"
                     Width="200"
                     Height="30" Click="FetchPersonGroup_Click"
                     />
                     <TextBlock x:Name="PersonGroupStatusTextBlock"
-                    Text="- Person Group status -"
+                    Text="- Person Group Status -"
                     HorizontalAlignment="Left"
                     Margin="20, 5 ,10, 10"
                     Width="600"
@@ -80,7 +80,7 @@
                 </StackPanel>
 
                 <StackPanel Background="LightGray">
-                    <TextBlock Text="3. Create a person, by inserting the Name here and pressing the Create Person button."
+                    <TextBlock Text="3. Create or delete a person here. Modify a person by fetching them first."
                     HorizontalAlignment="Left"
                     Margin="20, 5 ,10, 10"
                     Width="600"
@@ -92,24 +92,24 @@
                     PlaceholderText="Insert name of the person here"/>
                     <Button x:Name="CreatePersonButton"
                     Margin="20, 5 ,10, 10"
-                    Content="Create a Person"
+                    Content="Create Person"
                     Width="200"
                     Height="30"
                     Click="CreatePersonButton_ClickAsync"/>
                     <Button x:Name="FetchPersonButton"
                     Margin="20, 5 ,10, 10"
-                    Content="Fetch a Person"
+                    Content="Fetch Person"
                     Width="200"
                     Height="30"
                     Click="FetchPersonButton_ClickAsync"/>
                     <Button x:Name="DeletePersonButton"
                     Margin="20, 5 ,10, 10"
-                    Content="Delete a Person"
+                    Content="Delete Person"
                     Width="200"
                     Height="30"
                     Click="DeletePersonButton_ClickAsync"/>
                     <TextBlock x:Name="PersonStatusTextBlock"
-                    Text="- Person status -"
+                    Text="- Person Status -"
                     HorizontalAlignment="Left"
                     Margin="20, 5 ,10, 10"
                     Width="600"
@@ -122,7 +122,7 @@
                 </StackPanel>
 
                 <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="4. Add User Data by entering a label and value below and pressing the Add To List button. When all the information has been added, press the Submit User Data."
+                    <TextBlock Text="4. Enter information below then press Add To List. After list is complete, press Submit User Data to send to Azure Face."
                     Margin="20, 5 ,10, 10"
                     TextWrapping="Wrap"/>
                     <TextBox x:Name="PersonUserDataNameTextBox"
@@ -147,6 +147,9 @@
                     Width="200"
                     Height="30"
                     Click="UpdateUserDataButton_ClickAsync"/>
+                    <TextBlock Text="Delete all User Data for fetched Person."
+                    Margin="20, 5 ,10, 10"
+                    TextWrapping="Wrap"/>
                     <Button x:Name="DeleteUserData"
                     Margin="20, 5 ,10, 10"
                     Content="Delete User Data"
@@ -173,7 +176,7 @@
                 </StackPanel>
 
                 <StackPanel Background="LightGray">
-                    <TextBlock Text="5. Using Windows 10 Cam App, capture some photos of a single person (min 10 photos)"
+                    <TextBlock Text="5. Using Windows 10 Cam App, capture some photos of a single person (min 10 photos)."
                      HorizontalAlignment="Left"
                      Margin="20, 5 ,10, 10"
                      Width="600"
@@ -186,7 +189,7 @@
                     TextWrapping="Wrap"/>
                     <Button x:Name="CreateFolderButton"
                     Margin="20, 5 ,10, 10"
-                    Content="Create and Open Folder"
+                    Content="Create/Open Folder"
                     Width="200"
                     Height="30"
                     Click="CreateFolderButton_ClickAsync"/>
@@ -198,7 +201,7 @@
                 </StackPanel>
 
                 <StackPanel Background="LightGray">
-                    <TextBlock Text="7. If there are at least 6 valid photos, you can click below to submit to azure." 
+                    <TextBlock Text="7. If there are at least 6 valid photos, you can click below to submit to Azure." 
                        Margin="20, 5 ,10, 10"/>
                     <Button x:Name="SubmitToAzureButton"
                     Margin="20, 5 ,10, 10"
@@ -211,11 +214,11 @@
                 </StackPanel>
 
                 <StackPanel Background="LightGray">
-                    <TextBlock Text="8. Use this button to train the Face API." 
+                    <TextBlock Text="8. Use this button to train the Face API. This may take a few moments." 
                        Margin="20, 5 ,10, 10"/>
                     <Button x:Name="TrainButton"
                     Margin="20, 5 ,10, 10"
-                    Content="Train"
+                    Content="Train Model"
                     Width="200"
                     Height="30"
                     Click="TrainButton_ClickAsync"/>

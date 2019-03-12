@@ -55,13 +55,13 @@
                     Margin="20, 5 ,10, 10"
                     Content="Create Person Group"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="CreatePersonGroupButton_ClickAsync"/>
                     <Button x:Name="FetchPersonGroup"
                     Margin="20, 5 ,10, 10"
                     Content="Fetch Existing Group"
                     Width="200"
-                    Height="30" Click="FetchPersonGroup_Click"
+                    Height="35" Click="FetchPersonGroup_Click"
                     />
                     <TextBlock x:Name="PersonGroupStatusTextBlock"
                     Text="- Person Group Status -"
@@ -94,19 +94,19 @@
                     Margin="20, 5 ,10, 10"
                     Content="Create Person"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="CreatePersonButton_ClickAsync"/>
                     <Button x:Name="FetchPersonButton"
                     Margin="20, 5 ,10, 10"
                     Content="Fetch Person"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="FetchPersonButton_ClickAsync"/>
                     <Button x:Name="DeletePersonButton"
                     Margin="20, 5 ,10, 10"
                     Content="Delete Person"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="DeletePersonButton_ClickAsync"/>
                     <TextBlock x:Name="PersonStatusTextBlock"
                     Text="- Person Status -"
@@ -139,13 +139,13 @@
                     Margin="20, 5 ,10, 10"
                     Content="Add To List"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="AddNameValueToPayloadButton_Click"/>
                     <Button x:Name="UpdateUserData"
                     Margin="20, 5 ,10, 10"
                     Content="Submit User Data"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="UpdateUserDataButton_ClickAsync"/>
                     <TextBlock Text="Delete all User Data for fetched Person."
                     Margin="20, 5 ,10, 10"
@@ -154,7 +154,7 @@
                     Margin="20, 5 ,10, 10"
                     Content="Delete User Data"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="DeleteUserDataButton_ClickAsync"/>
                     <TextBlock x:Name="UpdateUserDataStatusTextBlock"
                     Text="- User Data Status -"
@@ -191,7 +191,7 @@
                     Margin="20, 5 ,10, 10"
                     Content="Create/Open Folder"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="CreateFolderButton_ClickAsync"/>
                     <TextBlock x:Name="CreateFolderErrorText"
                     Visibility="Collapsed" 
@@ -207,7 +207,7 @@
                     Margin="20, 5 ,10, 10"
                     Content="Submit To Azure"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="SubmitToAzureButton_ClickAsync"/>
                     <TextBlock x:Name="SubmissionStatusTextBlock" Text="Submission Status: " 
                        Margin="20, 5 ,10, 10"/>
@@ -220,7 +220,7 @@
                     Margin="20, 5 ,10, 10"
                     Content="Train Model"
                     Width="200"
-                    Height="30"
+                    Height="35"
                     Click="TrainButton_ClickAsync"/>
                     <TextBlock x:Name="TrainStatusTextBlock" Text="Submission Status: " 
                        Margin="20, 5 ,10, 10"/>

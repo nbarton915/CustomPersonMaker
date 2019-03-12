@@ -122,7 +122,7 @@
                 </StackPanel>
 
                 <StackPanel Background="WhiteSmoke">
-                    <TextBlock Text="4. Add User Data by entering a label and value below and pressing the Prepare User Data Payload button. When all the information has been added, press the Upload to Azure button."
+                    <TextBlock Text="4. Add User Data by entering a label and value below and pressing the Add To List button. When all the information has been added, press the Submit User Data."
                     Margin="20, 5 ,10, 10"
                     TextWrapping="Wrap"/>
                     <TextBox x:Name="PersonUserDataNameTextBox"
@@ -154,7 +154,7 @@
                     Height="30"
                     Click="DeleteUserDataButton_ClickAsync"/>
                     <TextBlock x:Name="UpdateUserDataStatusTextBlock"
-                    Text="- User Data status -"
+                    Text="- User Data Status -"
                     HorizontalAlignment="Left"
                     Margin="20, 5 ,10, 10"
                     Width="600"
@@ -165,7 +165,7 @@
                     Margin="20, 5 ,10, 10" 
                     Foreground="Red"/>
                     <TextBlock x:Name="UpdateUserDataPayloadTextBlock"
-                    Text="- User Data Payload -"
+                    Text="- User Data List -"
                     HorizontalAlignment="Left"
                     Margin="20, 5 ,10, 10"
                     Width="600"
@@ -173,7 +173,7 @@
                 </StackPanel>
 
                 <StackPanel Background="LightGray">
-                    <TextBlock Text="5. Using Windows 10 Cam App, capture some photos of a single person (min 10)"
+                    <TextBlock Text="5. Using Windows 10 Cam App, capture some photos of a single person (min 10 photos)"
                      HorizontalAlignment="Left"
                      Margin="20, 5 ,10, 10"
                      Width="600"

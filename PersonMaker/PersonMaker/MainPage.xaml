@@ -33,24 +33,6 @@
                      HorizontalAlignment="Left"
                      Margin="20, 5 ,10, 10"
                      PlaceholderText="Insert your Azure Key here"/>
-                    <TextBlock x:Name="BulkUploadTextBlock"
-                    Text="Select a CSV to add many Persons"
-                    HorizontalAlignment="Left"
-                    Margin="20, 5 ,10, 10"
-                    Width="600"
-                    TextWrapping="Wrap"/>
-                    <Button x:Name="BulkPersonUpload"
-                    Margin="20, 5 ,10, 10"
-                    Content="Select CSV"
-                    Width="200"
-                    Height="30" Click="BulkUploadButton_ClickAsync"
-                    />
-                    <TextBlock x:Name="BulkUploadStatusTextBlock"
-                    Text=""
-                    HorizontalAlignment="Left"
-                    Margin="20, 5 ,10, 10"
-                    Width="600"
-                    TextWrapping="Wrap"/>
                 </StackPanel>
 
                 <StackPanel Background="WhiteSmoke">

@@ -21,12 +21,14 @@ using System.Collections.ObjectModel;
 
 namespace PersonMaker
 { 
+    //Class for User data Key/Value pairs
     public class UserData
     {
         public string UserDataLabel { get; set; }
         public string UserDataValue { get; set; }
     }
 
+    //List of all user data for Person's as attributes
     public class Attributes
     {
         public List<UserData> Data { get; set; }
@@ -37,23 +39,27 @@ namespace PersonMaker
     /// 
     public sealed partial class MainPage : Page
     {
+        //Resource and Group information. Can have many Person's
         string authKey;
         string personGroupId;
         string personGroupName;
 
+        //Person information. Person is a part of a group
         Guid personId;
         string personName;
         StorageFolder personFolder;
 
+        //For interfacing with the face service resource
         private FaceServiceClient faceServiceClient;
         private PersonGroup knownGroup;
+        private Person knownPerson;
         private int minPhotos = 6;
 
+        //Data structures for manipulating data pre- and post- face service resource interfaces
         string personUserData;
         string personDataName;
         string jsonString;
         List<UserData> userDataPayload = new List<UserData> { };
-        private Person knownPerson;
 
         public MainPage()
         {
@@ -70,6 +76,7 @@ namespace PersonMaker
         /// </summary>
         /// 
 
+        //Method for adding to the payload of user data to be sent
         private void AddNameValueToPayloadButton_Click(object sender, RoutedEventArgs e)
         {
             personDataName = PersonUserDataNameTextBox.Text;
@@ -93,6 +100,7 @@ namespace PersonMaker
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
         }
 
+        //Method for creating a folder on the Pictures directory for the person if it doesn't already exist
         private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (personName.Length > 0 && personId != Guid.Empty)
@@ -109,6 +117,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for creating a new Person. Person cannot already exist in the group
         private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             UpdateUserDataPayloadTextBlock.Text = "";
@@ -159,6 +168,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for creating a new person group. Must create a group to work with Persons
         private async void CreatePersonGroupButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personGroupId = PersonGroupIdTextBox.Text;
@@ -220,6 +230,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for deleting a person and all associated information
         private async void DeletePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personName = PersonNameTextBox.Text;
@@ -261,6 +272,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for deleting User data for a person. Removes ALL Key/Value pairs for user data
         private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personUserData = "{}";
@@ -301,6 +313,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for checking if a person exists and fetching that Person object to work with. Can't add/change user data, pictures, and model until Person has been fetched
         private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             userDataPayload.Clear();
@@ -394,6 +407,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for checking if a person group exists and fecthing that Person Group object to work with. Can't work with Persons until Person Group has been fetched
         private async void FetchPersonGroup_Click(object sender, RoutedEventArgs e)
         {
             personGroupId = PersonGroupIdTextBox.Text;
@@ -458,6 +472,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for Submitting the folder with images to Azure only after the folder has been created and images transferred there
         private async void SubmitToAzureButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             string successfullySubmitted = string.Empty;
@@ -536,6 +551,7 @@ namespace PersonMaker
             }
         }
 
+        //Method for training the model to recognize the face of the person. Model training is blackboxed
         private async void TrainButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (personGroupId.Length > 0)
@@ -566,7 +582,7 @@ namespace PersonMaker
             }
         }
 
-        //To Do: Change CreateUserDataButton Method to update again, after it has been updated once
+        //Method for submitting User data payload to Azure for the Person. Can submit a single Key/Value pair without adding to the payload. Submission will replace any key/value pairs that already exist for the Person
         private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personDataName = PersonUserDataNameTextBox.Text;

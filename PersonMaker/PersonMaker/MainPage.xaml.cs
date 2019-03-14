@@ -317,21 +317,28 @@ namespace PersonMaker
         //Method for checking if a person exists and fetching that Person object to work with. Can't add/change user data, pictures, and model until Person has been fetched
         private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
             userDataPayload.Clear();
-            UpdateUserDataStatusTextBlock.Text = "";
-            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            TrainStatusTextBlock.Text = "";
-            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            UpdateUserDataPayloadTextBlock.Text = "";
             personName = PersonNameTextBox.Text;
-            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             authKey = AuthKeyTextBox.Text;
 
+            //Reset UI Globals
+            UpdateUserDataStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Text = "";
+            UpdateUserDataPayloadTextBlock.Text = "";
+
+            //Reset UI Colors
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+
+            //Prep API Call
             await ApiCallAllowed(true);
             faceServiceClient = new FaceServiceClient(authKey);
 
+            //Logic
             if (null != faceServiceClient && null != knownGroup && personName.Length > 0)
             {
                 // You may experience issues with this below call, if you are attempting connection with

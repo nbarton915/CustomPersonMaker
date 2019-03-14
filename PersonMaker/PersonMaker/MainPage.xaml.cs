@@ -126,6 +126,7 @@ namespace PersonMaker
                 emittedJson = emittedJson + json.Emit();
             }
             JSONTextBlock.Text = emittedJson;
+            InfoHeaderTextBlock.Text = knownPerson.Name + " User Data:";
 
             PersonUserDataNameTextBox.Text = "";
             PersonUserDataTextBox.Text = "";
@@ -159,6 +160,7 @@ namespace PersonMaker
 
             //Reset UI Globals
             JSONTextBlock.Text = "";
+            InfoHeaderTextBlock.Text = "";
             UpdateUserDataPayloadTextBlock.Text = "";
             UpdateUserDataStatusTextBlock.Text = "";
             SubmissionStatusTextBlock.Text = "";
@@ -287,6 +289,7 @@ namespace PersonMaker
 
             //Reset UI Globals
             JSONTextBlock.Text = "";
+            InfoHeaderTextBlock.Text = "";
             UpdateUserDataPayloadTextBlock.Text = "";
             UpdateUserDataStatusTextBlock.Text = "";
             SubmissionStatusTextBlock.Text = "";
@@ -359,6 +362,7 @@ namespace PersonMaker
                     {
                         UpdateUserDataPayloadTextBlock.Text = "No User Data...";
                         JSONTextBlock.Text = "";
+                        InfoHeaderTextBlock.Text = "";
                     }
                     else
                     {
@@ -382,6 +386,7 @@ namespace PersonMaker
             TrainStatusTextBlock.Text = "";
             UpdateUserDataPayloadTextBlock.Text = "";
             JSONTextBlock.Text = "";
+            InfoHeaderTextBlock.Text = "";
 
             //Reset UI Colors
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
@@ -471,6 +476,7 @@ namespace PersonMaker
                                 emittedJson = emittedJson + json.Emit();
                             }
                             JSONTextBlock.Text = emittedJson;
+                            InfoHeaderTextBlock.Text = knownPerson.Name + " User Data:";
                         }
                     }
                     catch
@@ -769,6 +775,7 @@ namespace PersonMaker
                             emittedJson = emittedJson + json.Emit();
                         }
                         JSONTextBlock.Text = emittedJson;
+                        InfoHeaderTextBlock.Text = knownPerson.Name + " User Data:";
                     }
                 }
             }

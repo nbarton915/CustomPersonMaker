@@ -5,7 +5,8 @@
     xmlns:local="using:PersonMaker"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer>
@@ -24,155 +25,155 @@
                            Margin="20, 10 ,10, 10"/>
 
                     <StackPanel Background="LightGray">
-                        <TextBlock Text="1. Insert your Face Recognition Key (it will be deleted when you close this app)."
-                           HorizontalAlignment="Left"
-                           Margin="20, 5 ,10, 10"
-                           Width="600"
-                           TextWrapping="Wrap"/>
-                        <TextBox x:Name="AuthKeyTextBox"
-                         Width="600"
-                         HorizontalAlignment="Left"
-                         Margin="20, 5 ,10, 10"
-                         PlaceholderText="Insert your Azure Key here"/>
+                        <controls:Expander Header="1. Insert your Face Recognition Key (it will be deleted when you close this app)." 
+                                           IsExpanded="True">
+                            <StackPanel>
+                                <TextBox x:Name="AuthKeyTextBox"
+                                   Width="600"
+                                   HorizontalAlignment="Left"
+                                   Margin="20, 5 ,10, 10"
+                                   PlaceholderText="Insert your Azure Key here"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
+                    
 
                     <StackPanel Background="WhiteSmoke">
-                        <TextBlock Text="2. To create or fetch a Person Group, insert the Person Group Id."
-                           HorizontalAlignment="Left"
-                           Margin="20, 5 ,10, 10"
-                           Width="600"
-                           TextWrapping="Wrap"/>
-                        <TextBox x:Name="PersonGroupIdTextBox"
-                         Width="600"
-                         HorizontalAlignment="Left"
-                         Margin="20, 5 ,10, 10"
-                         PlaceholderText="Insert your Person Group Id here"/>
-                        <TextBox x:Name="PersonGroupNameTextBox"
-                         Width="600"
-                         HorizontalAlignment="Left"
-                         Margin="20, 10 ,10, 10"
-                         PlaceholderText="Insert your Person Group Name here"/>
-                        <Button x:Name="CreatePersonGroupButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Create Person Group"
-                        Width="200"
-                        Height="35"
-                        Click="CreatePersonGroupButton_ClickAsync"/>
-                        <Button x:Name="FetchPersonGroup"
-                        Margin="20, 5 ,10, 10"
-                        Content="Fetch Existing Group"
-                        Width="200"
-                        Height="35" Click="FetchPersonGroup_Click"
-                        />
-                        <TextBlock x:Name="PersonGroupStatusTextBlock"
-                        Text="- Person Group Status -"
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        Width="600"
-                        TextWrapping="Wrap"/>
-                        <TextBlock x:Name="PersonGroupCreateErrorText"
-                        Text=""
-                        Visibility="Collapsed"
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        Width="600"
-                        TextWrapping="Wrap"
-                        Foreground="Red"/>
+                        <controls:Expander Header="2. To create or fetch a Person Group, insert the Person Group Id." IsExpanded="True">
+                            <StackPanel>
+                                <TextBox x:Name="PersonGroupIdTextBox"
+                                 Width="600"
+                                 HorizontalAlignment="Left"
+                                 Margin="20, 5 ,10, 10"
+                                 PlaceholderText="Insert your Person Group Id here"/>
+                                <TextBox x:Name="PersonGroupNameTextBox"
+                                 Width="600"
+                                 HorizontalAlignment="Left"
+                                 Margin="20, 10 ,10, 10"
+                                 PlaceholderText="Insert your Person Group Name here"/>
+                                <Button x:Name="CreatePersonGroupButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Create Person Group"
+                                Width="200"
+                                Height="35"
+                                Click="CreatePersonGroupButton_ClickAsync"/>
+                                <Button x:Name="FetchPersonGroup"
+                                Margin="20, 5 ,10, 10"
+                                Content="Fetch Existing Group"
+                                Width="200"
+                                Height="35" Click="FetchPersonGroup_Click"
+                                />
+                                <TextBlock x:Name="PersonGroupStatusTextBlock"
+                                Text="- Person Group Status -"
+                                HorizontalAlignment="Left"
+                                Margin="20, 5 ,10, 10"
+                                Width="600"
+                                TextWrapping="Wrap"/>
+                                <TextBlock x:Name="PersonGroupCreateErrorText"
+                                Text=""
+                                Visibility="Collapsed"
+                                HorizontalAlignment="Left"
+                                Margin="20, 5 ,10, 10"
+                                Width="600"
+                                TextWrapping="Wrap"
+                                Foreground="Red"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
 
                     <StackPanel Background="LightGray">
-                        <TextBlock Text="3. Create or delete a person here. Modify a person by fetching them first."
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        Width="600"
-                        TextWrapping="Wrap"/>
-                        <TextBox x:Name="PersonNameTextBox"
-                        Width="600"
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        PlaceholderText="Insert name of the person here"/>
-                        <Button x:Name="CreatePersonButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Create Person"
-                        Width="200"
-                        Height="35"
-                        Click="CreatePersonButton_ClickAsync"/>
-                        <Button x:Name="FetchPersonButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Fetch Person"
-                        Width="200"
-                        Height="35"
-                        Click="FetchPersonButton_ClickAsync"/>
-                        <Button x:Name="DeletePersonButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Delete Person"
-                        Width="200"
-                        Height="35"
-                        Click="DeletePersonButton_ClickAsync"/>
-                        <TextBlock x:Name="PersonStatusTextBlock"
-                        Text="- Person Status -"
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        Width="600"
-                        TextWrapping="Wrap"/>
-                        <TextBlock x:Name="CreatePersonErrorText"
-                        Visibility="Collapsed" 
-                        Text="" 
-                        Margin="20, 5 ,10, 10" 
-                        Foreground="Red"/>
+                        <controls:Expander Header="3. Create or delete a person here. Modify a person by fetching them first." IsExpanded="True">
+                            <StackPanel>
+                                <TextBox x:Name="PersonNameTextBox"
+                                Width="600"
+                                HorizontalAlignment="Left"
+                                Margin="20, 5 ,10, 10"
+                                PlaceholderText="Insert name of the person here"/>
+                                <Button x:Name="CreatePersonButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Create Person"
+                                Width="200"
+                                Height="35"
+                                Click="CreatePersonButton_ClickAsync"/>
+                                <Button x:Name="FetchPersonButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Fetch Person"
+                                Width="200"
+                                Height="35"
+                                Click="FetchPersonButton_ClickAsync"/>
+                                <Button x:Name="DeletePersonButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Delete Person"
+                                Width="200"
+                                Height="35"
+                                Click="DeletePersonButton_ClickAsync"/>
+                                <TextBlock x:Name="PersonStatusTextBlock"
+                                Text="- Person Status -"
+                                HorizontalAlignment="Left"
+                                Margin="20, 5 ,10, 10"
+                                Width="600"
+                                TextWrapping="Wrap"/>
+                                <TextBlock x:Name="CreatePersonErrorText"
+                                Visibility="Collapsed" 
+                                Text="" 
+                                Margin="20, 5 ,10, 10" 
+                                Foreground="Red"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
                     <StackPanel Background="WhiteSmoke">
-                        <TextBlock Text="4. Enter information below then press Add To List. After list is complete, press Submit User Data to send to Azure Face."
-                        Margin="20, 5 ,10, 10"
-                        TextWrapping="Wrap"/>
-                        <TextBox x:Name="PersonUserDataNameTextBox"
-                         Width="600"
-                         HorizontalAlignment="Left"
-                         Margin="20, 5 ,10, 10"
-                         PlaceholderText="Insert Label here"/>
-                        <TextBox x:Name="PersonUserDataTextBox"
-                         Width="600"
-                         HorizontalAlignment="Left"
-                         Margin="20, 5 ,10, 10"
-                         PlaceholderText="Insert Value here"/>
-                        <Button x:Name="AddUserData"
-                        Margin="20, 5 ,10, 10"
-                        Content="Add To List"
-                        Width="200"
-                        Height="35"
-                        Click="AddUserDataToListButton_Click"/>
-                        <Button x:Name="UpdateUserData"
-                        Margin="20, 5 ,10, 10"
-                        Content="Submit User Data"
-                        Width="200"
-                        Height="35"
-                        Click="UpdateUserDataButton_ClickAsync"/>
-                        <TextBlock Text="Delete all User Data for fetched Person."
-                        Margin="20, 5 ,10, 10"
-                        TextWrapping="Wrap"/>
-                        <Button x:Name="DeleteUserData"
-                        Margin="20, 5 ,10, 10"
-                        Content="Delete User Data"
-                        Width="200"
-                        Height="35"
-                        Click="DeleteUserDataButton_ClickAsync"/>
-                        <TextBlock x:Name="UpdateUserDataStatusTextBlock"
-                        Text="- User Data Status -"
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        Width="600"
-                        TextWrapping="Wrap"/>
-                        <TextBlock x:Name="UpdateUserDataErrorText"
-                        Visibility="Collapsed" 
-                        Text="" 
-                        Margin="20, 5 ,10, 10" 
-                        Foreground="Red"/>
-                        <TextBlock x:Name="UpdateUserDataPayloadTextBlock"
-                        Text="- User Data List -"
-                        HorizontalAlignment="Left"
-                        Margin="20, 5 ,10, 10"
-                        Width="600"
-                        TextWrapping="Wrap"/>
+                        <controls:Expander Header="4. Enter information below then press Add To List. After list is complete, press Submit User Data to send to Azure Face." IsExpanded="True">
+                            <StackPanel>
+                                <TextBox x:Name="PersonUserDataNameTextBox"
+                                 Width="600"
+                                 HorizontalAlignment="Left"
+                                 Margin="20, 5 ,10, 10"
+                                 PlaceholderText="Insert Label here"/>
+                                <TextBox x:Name="PersonUserDataTextBox"
+                                 Width="600"
+                                 HorizontalAlignment="Left"
+                                 Margin="20, 5 ,10, 10"
+                                 PlaceholderText="Insert Value here"/>
+                                <Button x:Name="AddUserData"
+                                Margin="20, 5 ,10, 10"
+                                Content="Add To List"
+                                Width="200"
+                                Height="35"
+                                Click="AddUserDataToListButton_Click"/>
+                                <Button x:Name="UpdateUserData"
+                                Margin="20, 5 ,10, 10"
+                                Content="Submit User Data"
+                                Width="200"
+                                Height="35"
+                                Click="UpdateUserDataButton_ClickAsync"/>
+                                <TextBlock Text="Delete all User Data for fetched Person."
+                                Margin="20, 5 ,10, 10"
+                                TextWrapping="Wrap"/>
+                                <Button x:Name="DeleteUserData"
+                                Margin="20, 5 ,10, 10"
+                                Content="Delete User Data"
+                                Width="200"
+                                Height="35"
+                                Click="DeleteUserDataButton_ClickAsync"/>
+                                <TextBlock x:Name="UpdateUserDataStatusTextBlock"
+                                Text="- User Data Status -"
+                                HorizontalAlignment="Left"
+                                Margin="20, 5 ,10, 10"
+                                Width="600"
+                                TextWrapping="Wrap"/>
+                                <TextBlock x:Name="UpdateUserDataErrorText"
+                                Visibility="Collapsed" 
+                                Text="" 
+                                Margin="20, 5 ,10, 10" 
+                                Foreground="Red"/>
+                                <TextBlock x:Name="UpdateUserDataPayloadTextBlock"
+                                Text="- User Data List -"
+                                HorizontalAlignment="Left"
+                                Margin="20, 5 ,10, 10"
+                                Width="600"
+                                TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
                     <StackPanel Background="LightGray">
                         <TextBlock Text="5. Using Windows 10 Cam App, capture some photos of a single person (min 10 photos)."
@@ -183,51 +184,60 @@
                     </StackPanel>
 
                     <StackPanel Background="WhiteSmoke">
-                        <TextBlock Text="6. Click the button below to create and open the person folder. Drop the photos in it."
-                        Margin="20, 5 ,10, 10"
-                        TextWrapping="Wrap"/>
-                        <Button x:Name="CreateFolderButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Create/Open Folder"
-                        Width="200"
-                        Height="35"
-                        Click="CreateFolderButton_ClickAsync"/>
-                        <TextBlock x:Name="CreateFolderErrorText"
-                        Visibility="Collapsed" 
-                        Text="" 
-                        Margin="20, 5 ,10, 10" 
-                        Foreground="Red"/>
+                        <controls:Expander Header="6. Click the button below to create and open the person folder. Drop the photos in it." IsExpanded="True">
+                            <StackPanel>
+                                <Button x:Name="CreateFolderButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Create/Open Folder"
+                                Width="200"
+                                Height="35"
+                                Click="CreateFolderButton_ClickAsync"/>
+                                <TextBlock x:Name="CreateFolderErrorText"
+                                Visibility="Collapsed" 
+                                Text="" 
+                                Margin="20, 5 ,10, 10" 
+                                Foreground="Red"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
 
                     <StackPanel Background="LightGray">
-                        <TextBlock Text="7. If there are at least 6 valid photos, you can click below to submit to Azure." 
-                           Margin="20, 5 ,10, 10"/>
-                        <Button x:Name="SubmitToAzureButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Submit To Azure"
-                        Width="200"
-                        Height="35"
-                        Click="SubmitToAzureButton_ClickAsync"/>
-                        <TextBlock x:Name="SubmissionStatusTextBlock" Text="Submission Status: " 
-                           Margin="20, 5 ,10, 10"/>
+                        <controls:Expander Header="7. If there are at least 6 valid photos, you can click below to submit to Azure." IsExpanded="True">
+                            <StackPanel>
+                                <Button x:Name="SubmitToAzureButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Submit To Azure"
+                                Width="200"
+                                Height="35"
+                                Click="SubmitToAzureButton_ClickAsync"/>
+                                <TextBlock x:Name="SubmissionStatusTextBlock" Text="Submission Status: " 
+                                   Margin="20, 5 ,10, 10"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
 
                     <StackPanel Background="WhiteSmoke">
-                        <TextBlock Text="8. Use this button to train the Face API. This may take a few moments." 
-                           Margin="20, 5 ,10, 10"/>
-                        <Button x:Name="TrainButton"
-                        Margin="20, 5 ,10, 10"
-                        Content="Train Model"
-                        Width="200"
-                        Height="35"
-                        Click="TrainButton_ClickAsync"/>
-                        <TextBlock x:Name="TrainStatusTextBlock" Text="Submission Status: " 
-                           Margin="20, 5 ,10, 10"/>
+                        <controls:Expander Header="8. Use this button to train the Face API. This may take a few moments." IsExpanded="True">
+                            <StackPanel>
+                                <Button x:Name="TrainButton"
+                                Margin="20, 5 ,10, 10"
+                                Content="Train Model"
+                                Width="200"
+                                Height="35"
+                                Click="TrainButton_ClickAsync"/>
+                                <TextBlock x:Name="TrainStatusTextBlock" Text="Submission Status: " 
+                                   Margin="20, 5 ,10, 10"/>
+                            </StackPanel>
+                        </controls:Expander>
                     </StackPanel>
 
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Background="WhiteSmoke">
+                    <TextBlock x:Name="InfoHeaderTextBlock" TextWrapping="Wrap" Text="" 
+                           Margin="20, 20 ,10, 10"
+                           Width="720"
+                           FontSize="20"/>
                     <TextBlock x:Name="JSONTextBlock" TextWrapping="Wrap" Text="" 
                            Margin="20, 5 ,10, 10"
                            Width="720"/>

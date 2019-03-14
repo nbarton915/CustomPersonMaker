@@ -9,7 +9,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Background="WhiteSmoke">
                 <StackPanel Orientation="Vertical" Background="WhiteSmoke">
                     <TextBlock Text="PERSON MAKER" 
                            FontSize="30"
@@ -228,6 +228,9 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Background="WhiteSmoke">
+                    <TextBlock x:Name="JSONTextBlock" Text="" 
+                           Margin="20, 5 ,10, 10"
+                           Width="720"/>
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>

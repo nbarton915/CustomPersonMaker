@@ -79,6 +79,7 @@ namespace PersonMaker
         //Method for adding to the payload of user data to be sent
         private void AddNameValueToPayloadButton_Click(object sender, RoutedEventArgs e)
         {
+
             personDataName = PersonUserDataNameTextBox.Text;
             personUserData = PersonUserDataTextBox.Text;
             SubmissionStatusTextBlock.Text = "";

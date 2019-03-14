@@ -228,7 +228,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Vertical" Background="WhiteSmoke">
-                    <TextBlock x:Name="JSONTextBlock" Text="" 
+                    <TextBlock x:Name="JSONTextBlock" TextWrapping="Wrap" Text="" 
                            Margin="20, 5 ,10, 10"
                            Width="720"/>
                 </StackPanel>

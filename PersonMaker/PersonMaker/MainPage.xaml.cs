@@ -415,6 +415,26 @@ namespace PersonMaker
                         {
                             UpdateUserDataStatusTextBlock.Text = "User Data for " + knownPerson.Name + ":";
                             UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+                            Chilkat.JsonObject json = new Chilkat.JsonObject();
+
+                            string jsonStr = JsonConvert.SerializeObject(userDataPayload);
+
+                            bool success = json.Load(jsonStr);
+                            if (success != true)
+                            {
+                                Debug.WriteLine(json.LastErrorText);
+                                return;
+                            }
+
+                            //  To pretty-print, set the EmitCompact property equal to false
+                            json.EmitCompact = false;
+
+                            //  If bare-LF line endings are desired, turn off EmitCrLf
+                            //  Otherwise CRLF line endings are emitted.
+                            json.EmitCrLf = false;
+
+                            //  Emit the formatted JSON:
+                            JSONTextBlock.Text = json.Emit();
                         }
                     }
                     catch

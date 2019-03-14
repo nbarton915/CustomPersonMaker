@@ -158,6 +158,7 @@ namespace PersonMaker
             personName = PersonNameTextBox.Text;
 
             //Reset UI Globals
+            JSONTextBlock.Text = "";
             UpdateUserDataPayloadTextBlock.Text = "";
             UpdateUserDataStatusTextBlock.Text = "";
             SubmissionStatusTextBlock.Text = "";
@@ -285,6 +286,7 @@ namespace PersonMaker
             personName = PersonNameTextBox.Text;
 
             //Reset UI Globals
+            JSONTextBlock.Text = "";
             UpdateUserDataPayloadTextBlock.Text = "";
             UpdateUserDataStatusTextBlock.Text = "";
             SubmissionStatusTextBlock.Text = "";
@@ -356,6 +358,7 @@ namespace PersonMaker
                     if (knownPerson.UserData == "{}")
                     {
                         UpdateUserDataPayloadTextBlock.Text = "No User Data...";
+                        JSONTextBlock.Text = "";
                     }
                     else
                     {
@@ -378,6 +381,7 @@ namespace PersonMaker
             SubmissionStatusTextBlock.Text = "";
             TrainStatusTextBlock.Text = "";
             UpdateUserDataPayloadTextBlock.Text = "";
+            JSONTextBlock.Text = "";
 
             //Reset UI Colors
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
@@ -739,7 +743,32 @@ namespace PersonMaker
                         UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
                         UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                         UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
-                    
+
+                        Chilkat.JsonObject json = new Chilkat.JsonObject();
+                        string emittedJson = "";
+
+                        foreach (var j in userDataPayload)
+                        {
+                            string jsonStr = JsonConvert.SerializeObject(j);
+
+                            bool success = json.Load(jsonStr);
+                            if (success != true)
+                            {
+                                Debug.WriteLine(json.LastErrorText);
+                                return;
+                            }
+
+                            //  To pretty-print, set the EmitCompact property equal to false
+                            json.EmitCompact = false;
+
+                            //  If bare-LF line endings are desired, turn off EmitCrLf
+                            //  Otherwise CRLF line endings are emitted.
+                            json.EmitCrLf = true;
+
+                            //  Emit the formatted JSON:
+                            emittedJson = emittedJson + json.Emit();
+                        }
+                        JSONTextBlock.Text = emittedJson;
                     }
                 }
             }

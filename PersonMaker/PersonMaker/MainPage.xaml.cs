@@ -77,16 +77,21 @@ namespace PersonMaker
         /// 
 
         //Method for adding to the payload of user data to be sent
-        private void AddNameValueToPayloadButton_Click(object sender, RoutedEventArgs e)
+        private void AddUserDataToListButton_Click(object sender, RoutedEventArgs e)
         {
-
+            //Clear Globals
             personDataName = PersonUserDataNameTextBox.Text;
             personUserData = PersonUserDataTextBox.Text;
+
+            //Reset UI Globals
             SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
+            //Logic
             if (personDataName.Length > 0 && personUserData.Length > 0)
             {
                 userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
@@ -121,15 +126,23 @@ namespace PersonMaker
         //Method for creating a new Person. Person cannot already exist in the group
         private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+
+            //Clear Globals
+            personName = PersonNameTextBox.Text;
+
+            //Reset UI Globals
             UpdateUserDataPayloadTextBlock.Text = "";
             UpdateUserDataStatusTextBlock.Text = "";
-            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            personName = PersonNameTextBox.Text;
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+
+            //Logic
             if (knownGroup != null && personName.Length > 0)
             {
                 CreatePersonErrorText.Visibility = Visibility.Collapsed;
@@ -172,19 +185,25 @@ namespace PersonMaker
         //Method for creating a new person group. Must create a group to work with Persons
         private async void CreatePersonGroupButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
             personGroupId = PersonGroupIdTextBox.Text;
             personGroupName = PersonGroupNameTextBox.Text;
-            PersonStatusTextBlock.Text = "";
-            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            UpdateUserDataStatusTextBlock.Text = "";
-            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            TrainStatusTextBlock.Text = "";
-            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             authKey = AuthKeyTextBox.Text;
 
+            //Reset UI Globals
+            PersonStatusTextBlock.Text = "";
+            UpdateUserDataStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Text = "";
+            TrainStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+
+            //Logic
             if (string.IsNullOrWhiteSpace(personGroupId) == false && string.IsNullOrWhiteSpace(personGroupName) == false && string.IsNullOrWhiteSpace(authKey) == false)
             {
                 PersonGroupCreateErrorText.Visibility = Visibility.Collapsed;
@@ -234,17 +253,22 @@ namespace PersonMaker
         //Method for deleting a person and all associated information
         private async void DeletePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
+            userDataPayload.Clear();
             personName = PersonNameTextBox.Text;
+
+            //Reset UI Globals
             UpdateUserDataPayloadTextBlock.Text = "";
             UpdateUserDataStatusTextBlock.Text = "";
-            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
-            userDataPayload.Clear();
-
+            //Logic
             if (string.IsNullOrWhiteSpace(personName) == false)
             {
                 CreatePersonErrorText.Visibility = Visibility.Collapsed;
@@ -418,22 +442,31 @@ namespace PersonMaker
         //Method for checking if a person group exists and fecthing that Person Group object to work with. Can't work with Persons until Person Group has been fetched
         private async void FetchPersonGroup_Click(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
+            authKey = AuthKeyTextBox.Text;
             personGroupId = PersonGroupIdTextBox.Text;
             personGroupName = PersonGroupNameTextBox.Text;
+
+            //Reset UI Globals
             PersonStatusTextBlock.Text = "";
-            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             UpdateUserDataStatusTextBlock.Text = "";
-            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Text = "";
+
+
+            //Reset UI Colors
+            PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-            authKey = AuthKeyTextBox.Text;
+  
 
+            //Prep API Call
             await ApiCallAllowed(true);
             faceServiceClient = new FaceServiceClient(authKey);
 
+            //Logic
             if (null != faceServiceClient && authKey != "")
             {
  
@@ -593,13 +626,19 @@ namespace PersonMaker
         //Method for submitting User data payload to Azure for the Person. Can submit a single Key/Value pair without adding to the payload. Submission will replace any key/value pairs that already exist for the Person
         private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
             personDataName = PersonUserDataNameTextBox.Text;
             personUserData = PersonUserDataTextBox.Text;
+
+            //Reset UI Globals
             SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
+            //Logic
             if (personDataName.Length > 0 && personUserData.Length > 0)
             {
                 userDataPayload.Add(new UserData() { UserDataLabel = personDataName, UserDataValue = personUserData });
@@ -659,6 +698,7 @@ namespace PersonMaker
             }
         }
 
+        //API Call to assign all people to variable "People"
         internal async Task<Person[]> GetKnownPeople()
         {
             Person[] people = null;
@@ -670,6 +710,7 @@ namespace PersonMaker
             return people;
         }
 
+        //API call to remove person
         internal async Task RemovePerson(Person person)
         {
             if (null != person)

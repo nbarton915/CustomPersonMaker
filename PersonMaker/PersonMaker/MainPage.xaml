@@ -140,7 +140,7 @@
                         Content="Add To List"
                         Width="200"
                         Height="35"
-                        Click="AddNameValueToPayloadButton_Click"/>
+                        Click="AddUserDataToListButton_Click"/>
                         <Button x:Name="UpdateUserData"
                         Margin="20, 5 ,10, 10"
                         Content="Submit User Data"

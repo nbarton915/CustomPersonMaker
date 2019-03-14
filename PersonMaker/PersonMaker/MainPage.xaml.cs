@@ -100,6 +100,33 @@ namespace PersonMaker
             jsonString = JsonConvert.SerializeObject(userDataPayload);
             UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: ";
             UpdateUserDataPayloadTextBlock.Text = jsonString;
+
+            Chilkat.JsonObject json = new Chilkat.JsonObject();
+            string emittedJson = "";
+
+            foreach (var j in userDataPayload)
+            {
+                string jsonStr = JsonConvert.SerializeObject(j);
+
+                bool success = json.Load(jsonStr);
+                if (success != true)
+                {
+                    Debug.WriteLine(json.LastErrorText);
+                    return;
+                }
+
+                //  To pretty-print, set the EmitCompact property equal to false
+                json.EmitCompact = false;
+
+                //  If bare-LF line endings are desired, turn off EmitCrLf
+                //  Otherwise CRLF line endings are emitted.
+                json.EmitCrLf = true;
+
+                //  Emit the formatted JSON:
+                emittedJson = emittedJson + json.Emit();
+            }
+            JSONTextBlock.Text = emittedJson;
+
             PersonUserDataNameTextBox.Text = "";
             PersonUserDataTextBox.Text = "";
 
@@ -417,24 +444,29 @@ namespace PersonMaker
                             UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
                             Chilkat.JsonObject json = new Chilkat.JsonObject();
 
-                            string jsonStr = JsonConvert.SerializeObject(userDataPayload);
-
-                            bool success = json.Load(jsonStr);
-                            if (success != true)
+                            string emittedJson = "";
+                            foreach (var j in userDataPayload)
                             {
-                                Debug.WriteLine(json.LastErrorText);
-                                return;
+                                string jsonStr = JsonConvert.SerializeObject(j);
+
+                                bool success = json.Load(jsonStr);
+                                if (success != true)
+                                {
+                                    Debug.WriteLine(json.LastErrorText);
+                                    return;
+                                }
+
+                                //  To pretty-print, set the EmitCompact property equal to false
+                                json.EmitCompact = false;
+
+                                //  If bare-LF line endings are desired, turn off EmitCrLf
+                                //  Otherwise CRLF line endings are emitted.
+                                json.EmitCrLf = true;
+
+                                //  Emit the formatted JSON:
+                                emittedJson = emittedJson + json.Emit();
                             }
-
-                            //  To pretty-print, set the EmitCompact property equal to false
-                            json.EmitCompact = false;
-
-                            //  If bare-LF line endings are desired, turn off EmitCrLf
-                            //  Otherwise CRLF line endings are emitted.
-                            json.EmitCrLf = false;
-
-                            //  Emit the formatted JSON:
-                            JSONTextBlock.Text = json.Emit();
+                            JSONTextBlock.Text = emittedJson;
                         }
                     }
                     catch

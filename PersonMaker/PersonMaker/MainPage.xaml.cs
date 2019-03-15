@@ -539,12 +539,26 @@ namespace PersonMaker
                     PersonGroup[] groups = await faceServiceClient.ListPersonGroupsAsync();
                     var matchedGroups = groups.Where(p => p.PersonGroupId == personGroupId);
 
-
                     if (matchedGroups.Count() > 0)
                     {
                         knownGroup = matchedGroups.FirstOrDefault();
 
                         PersonGroupStatusTextBlock.Text = "Found existing: " + knownGroup.Name;
+                        Person[] people = await faceServiceClient.ListPersonsAsync(knownGroup.PersonGroupId);
+
+                        string peopleText = "";
+
+                        foreach (var p in people)
+                        {
+                            Button newButton = new Button { Content = p.Name + "\n\r" };
+                            newButton.Click += SelectPerson_ClickAsync;
+                            btns.Children.Add(newButton);
+                            peopleText += p.Name + "\n\r";
+                        }
+
+                        InfoHeaderTextBlock.Text = "People In " + knownGroup.Name + ":";
+                        JSONTextBlock.Text = peopleText;
+
                     }
 
                     if (null == knownGroup)
@@ -562,10 +576,11 @@ namespace PersonMaker
                     }
 
                 }
-                catch
+                catch (Exception ex)
                 {
                     PersonGroupStatusTextBlock.Text = "Verify that your Group ID and API Key are correct.";
                     PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
+                    Debug.WriteLine(ex.ToString());
                 }
             }
             else
@@ -573,6 +588,15 @@ namespace PersonMaker
                 PersonGroupStatusTextBlock.Text = "Verify that your Group ID and API Key are correct.";
                 PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
             }
+        }
+
+        private async void SelectPerson_ClickAsync(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            string s = btn.Content.ToString();
+
+            PersonNameTextBox.Text = s;
+            FetchPersonButton_ClickAsync(this, new RoutedEventArgs());
         }
 
         //Method for Submitting the folder with images to Azure only after the folder has been created and images transferred there

@@ -51,18 +51,20 @@
                                  HorizontalAlignment="Left"
                                  Margin="20, 10 ,10, 10"
                                  PlaceholderText="Insert your Person Group Name here"/>
-                                <Button x:Name="CreatePersonGroupButton"
-                                Margin="20, 5 ,10, 10"
-                                Content="Create Person Group"
-                                Width="200"
-                                Height="35"
-                                Click="CreatePersonGroupButton_ClickAsync"/>
-                                <Button x:Name="FetchPersonGroup"
-                                Margin="20, 5 ,10, 10"
-                                Content="Fetch Existing Group"
-                                Width="200"
-                                Height="35" Click="FetchPersonGroup_Click"
-                                />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="CreatePersonGroupButton"
+                                    Margin="20, 5 ,10, 10"
+                                    Content="Create Person Group"
+                                    Width="200"
+                                    Height="35"
+                                    Click="CreatePersonGroupButton_ClickAsync"/>
+                                    <Button x:Name="FetchPersonGroup"
+                                    Margin="20, 5 ,10, 10"
+                                    Content="Fetch Existing Group"
+                                    Width="200"
+                                    Height="35" Click="FetchPersonGroup_Click"
+                                    />
+                                </StackPanel>
                                 <TextBlock x:Name="PersonGroupStatusTextBlock"
                                 Text="- Person Group Status -"
                                 HorizontalAlignment="Left"
@@ -89,18 +91,23 @@
                                 HorizontalAlignment="Left"
                                 Margin="20, 5 ,10, 10"
                                 PlaceholderText="Insert name of the person here"/>
-                                <Button x:Name="CreatePersonButton"
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="CreatePersonButton"
+                                    Margin="20, 5 ,10, 10"
+                                    Content="Create Person"
+                                    Width="200"
+                                    Height="35"
+                                    Click="CreatePersonButton_ClickAsync"/>
+                                    <Button x:Name="FetchPersonButton"
+                                    Margin="20, 5 ,10, 10"
+                                    Content="Fetch Person"
+                                    Width="200"
+                                    Height="35"
+                                    Click="FetchPersonButton_ClickAsync"/>
+                                </StackPanel>
+                                <TextBlock Text="Delete the Person who is entered above."
                                 Margin="20, 5 ,10, 10"
-                                Content="Create Person"
-                                Width="200"
-                                Height="35"
-                                Click="CreatePersonButton_ClickAsync"/>
-                                <Button x:Name="FetchPersonButton"
-                                Margin="20, 5 ,10, 10"
-                                Content="Fetch Person"
-                                Width="200"
-                                Height="35"
-                                Click="FetchPersonButton_ClickAsync"/>
+                                TextWrapping="Wrap"/>
                                 <Button x:Name="DeletePersonButton"
                                 Margin="20, 5 ,10, 10"
                                 Content="Delete Person"
@@ -134,18 +141,20 @@
                                  HorizontalAlignment="Left"
                                  Margin="20, 5 ,10, 10"
                                  PlaceholderText="Insert Value here"/>
-                                <Button x:Name="AddUserData"
-                                Margin="20, 5 ,10, 10"
-                                Content="Add To List"
-                                Width="200"
-                                Height="35"
-                                Click="AddUserDataToListButton_Click"/>
-                                <Button x:Name="UpdateUserData"
-                                Margin="20, 5 ,10, 10"
-                                Content="Submit User Data"
-                                Width="200"
-                                Height="35"
-                                Click="UpdateUserDataButton_ClickAsync"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="AddUserData"
+                                    Margin="20, 5 ,10, 10"
+                                    Content="Add To List"
+                                    Width="200"
+                                    Height="35"
+                                    Click="AddUserDataToListButton_Click"/>
+                                    <Button x:Name="UpdateUserData"
+                                    Margin="20, 5 ,10, 10"
+                                    Content="Submit User Data"
+                                    Width="200"
+                                    Height="35"
+                                    Click="UpdateUserDataButton_ClickAsync"/>
+                                </StackPanel>
                                 <TextBlock Text="Delete all User Data for fetched Person."
                                 Margin="20, 5 ,10, 10"
                                 TextWrapping="Wrap"/>
@@ -238,6 +247,7 @@
                            Margin="20, 20 ,10, 10"
                            Width="720"
                            FontSize="20"/>
+                    <StackPanel Orientation="Horizontal" x:Name="btns"></StackPanel>
                     <TextBlock x:Name="JSONTextBlock" TextWrapping="Wrap" Text="" 
                            Margin="20, 5 ,10, 10"
                            Width="720"/>

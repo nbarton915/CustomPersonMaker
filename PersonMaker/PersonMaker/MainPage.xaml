@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls">
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <ScrollViewer>
@@ -247,8 +248,8 @@
                            Margin="20, 20 ,10, 10"
                            Width="720"
                            FontSize="20"/>
-                    <StackPanel x:Name="btns" Orientation="Horizontal">
-                        <controls:WrapPanel/>
+                    <StackPanel Orientation="Horizontal">
+                    <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3" x:Name="btns"></VariableSizedWrapGrid>
                     </StackPanel>
                     <TextBlock x:Name="JSONHeaderTextBlock" TextWrapping="Wrap" Text="" 
                            Margin="20, 5 ,10, 10"

@@ -33,6 +33,7 @@ namespace PersonMaker
     {
         public List<UserData> Data { get; set; }
     }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -69,6 +70,15 @@ namespace PersonMaker
             personGroupId = string.Empty;
             personGroupName = string.Empty;
             personId = Guid.Empty;
+        }
+        public class NamedPersonButton
+        {
+            public NamedPersonButton(string content)
+            {
+                Content = content;
+            }
+
+            public string Content { get; set; }
         }
 
         /// <summary>
@@ -549,21 +559,22 @@ namespace PersonMaker
                         PersonGroupStatusTextBlock.Text = "Found existing: " + knownGroup.Name;
                         Person[] people = await faceServiceClient.ListPersonsAsync(knownGroup.PersonGroupId);
 
-                        string peopleText = "";
-
                         foreach (var p in people)
                         {
                             Button newButton = new Button
                             {
-                                Content = p.Name + "\n\r",
-                                Margin = new Thickness(20, 5, 10, 10),
-                                Width = 200,
-                                Height = 35
+                                Content=p.Name,
+                                Margin=new Thickness(20, 5, 10, 10),
+                                Height=50,
+                                Width=200,
                             };
                             newButton.Click += SelectPerson_Click;
                             btns.Children.Add(newButton);
-                            peopleText += p.Name + "\n\r";
                         }
+                        //foreach (var c in btns.Children)
+                        //{
+                        //    c.SetValue(VariableSizedWrapGrid.ColumnSpanProperty, );
+                        //}
 
                         InfoHeaderTextBlock.Text = "People In " + knownGroup.Name + ":";
                     }

@@ -559,17 +559,31 @@ namespace PersonMaker
                         PersonGroupStatusTextBlock.Text = "Found existing: " + knownGroup.Name;
                         Person[] people = await faceServiceClient.ListPersonsAsync(knownGroup.PersonGroupId);
 
-                        foreach (var p in people)
+                        if (people.Count() <= 12)
                         {
-                            Button newButton = new Button
+
+                            foreach (var p in people)
                             {
-                                Content=p.Name,
-                                Margin=new Thickness(20, 5, 10, 10),
-                                Height=50,
-                                Width=200,
-                            };
-                            newButton.Click += SelectPerson_Click;
-                            btns.Children.Add(newButton);
+                                Button newButton = new Button
+                                {
+                                    Content = p.Name,
+                                    Margin = new Thickness(20, 5, 10, 10),
+                                    Height = 50,
+                                    Width = 200,
+                                };
+                                newButton.Click += SelectPerson_Click;
+                                btns.Children.Add(newButton);
+                            }
+                        }
+                        else
+                        {
+                            btns.Children.Clear();
+                            string peopleText = "";
+                            foreach (var p in people)
+                            {
+                                peopleText += "\n\r" + p.Name;
+                            }
+                            JSONTextBlock.Text = peopleText;
                         }
                         //foreach (var c in btns.Children)
                         //{

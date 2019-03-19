@@ -144,6 +144,57 @@ namespace PersonMaker
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
         }
 
+        private async void AddPersonButtons(PersonGroup group = null, Person[] people = null)
+        {
+            //Reset the UI elements
+            btns.Children.Clear();
+            InfoHeaderTextBlock.Text = "";
+
+            if (null != group || null != people)
+            {
+                //Set people ONLY if the group was sent but NOT the people
+                if (null != group && null == people)
+                {
+                    //Prep API Call
+                    await ApiCallAllowed(true);
+                    faceServiceClient = new FaceServiceClient(authKey);
+                    people = await faceServiceClient.ListPersonsAsync(group.PersonGroupId);
+                }
+
+                if (people.Count() <= 50)
+                {
+                    foreach (var p in people)
+                    {
+                        Button newButton = new Button
+                        {
+                            Content = p.Name,
+                            Margin = new Thickness(20, 5, 10, 10),
+                            Height = 50,
+                            Width = 200,
+                        };
+                        newButton.Click += SelectPerson_Click;
+                        btns.Children.Add(newButton);
+                    }
+                }
+                else
+                {
+                    btns.Children.Clear();
+                    string peopleText = "";
+                    foreach (var p in people)
+                    {
+                        peopleText += "\n\r" + p.Name;
+                    }
+                    JSONTextBlock.Text = peopleText;
+                }
+
+                InfoHeaderTextBlock.Text = "People In " + knownGroup.Name + ":";
+            }
+            else
+            {
+                InfoHeaderTextBlock.Text = "There seems to be a problem with the Group";
+            }
+        }
+
         //Method for creating a folder on the Pictures directory for the person if it doesn't already exist
         private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
         {
@@ -333,6 +384,9 @@ namespace PersonMaker
                 {
                     PersonStatusTextBlock.Text = $"No persons found to delete.";
                 }
+                //Get the list of people again after the deletion
+                ppl = await GetKnownPeople();
+                AddPersonButtons(people: ppl);
             }
             else
             {
@@ -425,26 +479,13 @@ namespace PersonMaker
 
                     PersonStatusTextBlock.Text = "Found existing: " + knownPerson.Name;
 
-                    //Attributes UserAttributes = new Attributes();
-                    //var json = JsonConvert.SerializeObject(knownPerson.UserData);
-                    //var json2 = JsonConvert.DeserializeObject(json);
-                    
-
-                    //Debug.WriteLine(json);
-                    //UserData UserAttributes = new UserData();
-                    //UserAttributes.Data = JsonConvert.DeserializeObject<List<UserData>>(json);
-
                     try
                     {
                         Attributes attributes = new Attributes();
                         attributes.Data = JsonConvert.DeserializeObject<List<UserData>>(knownPerson.UserData);
-                        //Debug.WriteLine(json);
-                        //Attributes UserAttributes = new Attributes();
-                        //UserAttributes = JsonConvert.DeserializeObject<Attributes>(json);
 
                         foreach (var item in attributes.Data)
                         {
-                            Debug.WriteLine("Label: {0}, Value: {1}", item.UserDataLabel.ToString(), item.UserDataValue.ToString());
                             userDataPayload.Add(new UserData() { UserDataLabel = item.UserDataLabel.ToString(), UserDataValue = item.UserDataValue.ToString() });
                         }
                     }
@@ -457,8 +498,11 @@ namespace PersonMaker
                     {
                         if (knownPerson.UserData == "{}")
                         {
+                            //For if the person has had user data in the past but has now been deleted and no longer has user data
                             UpdateUserDataStatusTextBlock.Text = knownPerson.Name + " does not have user data.";
-                            UpdateUserDataPayloadTextBlock.Text = "No payload";
+                            UpdateUserDataPayloadTextBlock.Text = "No User Data List";
+                            JSONHeaderTextBlock.Text = "No user data for " + knownPerson.Name;
+                            JSONTextBlock.Text = "To add data to this person, enter one or more Label and a Value pairs in step 4 and select Add To List.\n\rSubmit User Data once all the Label/Value pairs have been added.";
                         }
                         else
                         {
@@ -494,7 +538,10 @@ namespace PersonMaker
                     }
                     catch
                     {
+                        //If the person has never had any user data associated with it
                         UpdateUserDataStatusTextBlock.Text = "No User Data";
+                        JSONHeaderTextBlock.Text = "No user data for " + knownPerson.Name;
+                        JSONTextBlock.Text = "To add data to this person, enter one or more Label and a Value pairs in step 4 and select Add To List.\n\rSubmit User Data once all the Label/Value pairs have been added.";
                     }
                 }
 
@@ -557,40 +604,8 @@ namespace PersonMaker
                         knownGroup = matchedGroups.FirstOrDefault();
 
                         PersonGroupStatusTextBlock.Text = "Found existing: " + knownGroup.Name;
-                        Person[] people = await faceServiceClient.ListPersonsAsync(knownGroup.PersonGroupId);
 
-                        if (people.Count() <= 12)
-                        {
-
-                            foreach (var p in people)
-                            {
-                                Button newButton = new Button
-                                {
-                                    Content = p.Name,
-                                    Margin = new Thickness(20, 5, 10, 10),
-                                    Height = 50,
-                                    Width = 200,
-                                };
-                                newButton.Click += SelectPerson_Click;
-                                btns.Children.Add(newButton);
-                            }
-                        }
-                        else
-                        {
-                            btns.Children.Clear();
-                            string peopleText = "";
-                            foreach (var p in people)
-                            {
-                                peopleText += "\n\r" + p.Name;
-                            }
-                            JSONTextBlock.Text = peopleText;
-                        }
-                        //foreach (var c in btns.Children)
-                        //{
-                        //    c.SetValue(VariableSizedWrapGrid.ColumnSpanProperty, );
-                        //}
-
-                        InfoHeaderTextBlock.Text = "People In " + knownGroup.Name + ":";
+                        AddPersonButtons(knownGroup);
                     }
 
                     if (null == knownGroup)

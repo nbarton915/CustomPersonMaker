@@ -253,7 +253,8 @@
                     </StackPanel>
                     <TextBlock x:Name="JSONHeaderTextBlock" TextWrapping="Wrap" Text="" 
                            Margin="20, 5 ,10, 10"
-                           Width="720"/>
+                           Width="720"
+                           FontSize="20"/>
                     <TextBlock x:Name="JSONTextBlock" TextWrapping="Wrap" Text="" 
                            Margin="20, 5 ,10, 10"
                            Width="720"/>

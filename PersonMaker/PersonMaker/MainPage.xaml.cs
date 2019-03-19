@@ -21,19 +21,6 @@ using System.Collections.ObjectModel;
 
 namespace PersonMaker
 { 
-    //Class for User data Key/Value pairs
-    public class UserData
-    {
-        public string UserDataLabel { get; set; }
-        public string UserDataValue { get; set; }
-    }
-
-    //List of all user data for Person's as attributes
-    public class Attributes
-    {
-        public List<UserData> Data { get; set; }
-    }
-
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -62,6 +49,19 @@ namespace PersonMaker
         string jsonString;
         List<UserData> userDataPayload = new List<UserData> { };
 
+        //Class for User data Key/Value pairs
+        public class UserData
+        {
+            public string UserDataLabel { get; set; }
+            public string UserDataValue { get; set; }
+        }
+
+        //List of all user data for Person's as attributes
+        public class Attributes
+        {
+            public List<UserData> Data { get; set; }
+        }
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -70,15 +70,6 @@ namespace PersonMaker
             personGroupId = string.Empty;
             personGroupName = string.Empty;
             personId = Guid.Empty;
-        }
-        public class NamedPersonButton
-        {
-            public NamedPersonButton(string content)
-            {
-                Content = content;
-            }
-
-            public string Content { get; set; }
         }
 
         /// <summary>

@@ -24,7 +24,6 @@ namespace PersonMaker
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    /// 
     public sealed partial class MainPage : Page
     {
         //Resource and Group information. Can have many Person's
@@ -49,19 +48,41 @@ namespace PersonMaker
         string jsonString;
         List<UserData> userDataPayload = new List<UserData> { };
 
-        //Class for User data Key/Value pairs
+        /// <summary>
+        /// The <c>UserData</c> class.
+        /// </summary>
+        /// <remarks>
+        /// <para>This class models the User Data represented by Label/Value pairs</para>
+        /// </remarks>
         public class UserData
         {
+            /// <value>
+            /// Gets/Sets the value of UserDataLabel property
+            /// </value>
             public string UserDataLabel { get; set; }
+            /// <value>
+            /// Gets/Sets the value of the UserDataValue property
+            /// </value>
             public string UserDataValue { get; set; }
         }
 
-        //List of all user data for Person's as attributes
+        /// <summary>
+        /// The <c>Attributes</c> class.
+        /// </summary>
+        /// <remarks>
+        /// <para>This class models the User Data as a list of <c>UserData</c> objects</para>
+        /// </remarks>
         public class Attributes
         {
+            /// <value>
+            /// Gets/Sets the list of all user <c>Data</c> for Person's as attributes.
+            /// </value>
             public List<UserData> Data { get; set; }
         }
 
+        /// <summary>
+        /// Initializes the page and sets the form fields to emtpy.
+        /// </summary>
         public MainPage()
         {
             this.InitializeComponent();
@@ -73,11 +94,10 @@ namespace PersonMaker
         }
 
         /// <summary>
-        /// Create a person group with ID and name provided if none can be found in the service.
+        /// Append <c>UserData</c> to the list in preparation to send to Azure
         /// </summary>
-        /// 
-
-        //Method for adding to the payload of user data to be sent
+        /// <param name="sender">A Sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
         private void AddUserDataToListButton_Click(object sender, RoutedEventArgs e)
         {
             //Clear Globals
@@ -135,6 +155,14 @@ namespace PersonMaker
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
         }
 
+        /// <summary>
+        /// Create UI buttons for the Person's in the group
+        /// </summary>
+        /// <param name="group">An optional <c>PersonGroup</c> object.</param>
+        /// <param name="people">An optional <c>Person</c> list.</param>
+        /// <remarks>
+        /// <para>Both parameters are optional, BUT at least one must be provided</para>
+        /// </remarks>
         private async void AddPersonButtons(PersonGroup group = null, Person[] people = null)
         {
             //Reset the UI elements
@@ -186,7 +214,16 @@ namespace PersonMaker
             }
         }
 
-        //Method for creating a folder on the Pictures directory for the person if it doesn't already exist
+        /// <summary>
+        /// Create a Folder for images if it doesn't already exist.
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>The folder is created in the Pictures directory and is named using the person name.</para>
+        /// <para>If the folder already exists, it will be opened in file explorer.</para>
+        /// <para>Pictures in the folder will be uploaded with <c>SubmitToAzureButton_ClickAsync</c> method.</para>
+        /// </remarks>
         private async void CreateFolderButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (personName.Length > 0 && personId != Guid.Empty)
@@ -203,7 +240,14 @@ namespace PersonMaker
             }
         }
 
-        //Method for creating a new Person. Person cannot already exist in the group
+        /// <summary>
+        /// Create a new Person in the Person Group of the Face Resource
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Person can't already exist in the Person Group</para>
+        /// </remarks>
         private async void CreatePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
 
@@ -265,7 +309,14 @@ namespace PersonMaker
             }
         }
 
-        //Method for creating a new person group. Must create a group to work with Persons
+        /// <summary>
+        /// Create a Person Group with ID and name provided if none can be found in the service.
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Method for creating a new person group. Must create a group to work with Persons</para>
+        /// </remarks>
         private async void CreatePersonGroupButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             //Clear Globals
@@ -333,7 +384,15 @@ namespace PersonMaker
             }
         }
 
-        //Method for deleting a person and all associated information
+        /// <summary>
+        /// Delete a Person
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Removes the object in the Person Group of the Face resource.</para>
+        /// <para>Deletes all associated data.</para>
+        /// </remarks>
         private async void DeletePersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             //Clear Globals
@@ -386,7 +445,14 @@ namespace PersonMaker
             }
         }
 
-        //Method for deleting User data for a person. Removes ALL Key/Value pairs for user data
+        /// <summary>
+        /// Delete User Data
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Removes ALL Label/Value pairs for user data</para>
+        /// </remarks>
         private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             personUserData = "{}";
@@ -430,7 +496,14 @@ namespace PersonMaker
             }
         }
 
-        //Method for checking if a person exists and fetching that Person object to work with. Can't add/change user data, pictures, and model until Person has been fetched
+        /// <summary>
+        /// Check if Person exists and retrieve that Person object to work with.
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Can't add/change user data, pictures, and model until Person has been fetched.</para>
+        /// </remarks>
         private async void FetchPersonButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             //Clear Globals
@@ -552,7 +625,14 @@ namespace PersonMaker
             }
         }
 
-        //Method for checking if a person group exists and fecthing that Person Group object to work with. Can't work with Persons until Person Group has been fetched
+        /// <summary>
+        /// Check if Person Group exists and retrieve that Person Group object to work with.
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Can't work with Persons until Person Group has been fetched.</para>
+        /// </remarks>
         private async void FetchPersonGroup_Click(object sender, RoutedEventArgs e)
         {
             //Clear Globals
@@ -628,6 +708,14 @@ namespace PersonMaker
             }
         }
 
+        /// <summary>
+        /// Click event handlers for <c>btns</c> Person buttons
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Fetches the Person named on the Person button</para>
+        /// </remarks>
         private void SelectPerson_Click(object sender, RoutedEventArgs e)
         {
             Button btn = sender as Button;
@@ -637,7 +725,15 @@ namespace PersonMaker
             FetchPersonButton_ClickAsync(this, new RoutedEventArgs());
         }
 
-        //Method for Submitting the folder with images to Azure only after the folder has been created and images transferred there
+        /// <summary>
+        /// Sends images to the Azure Face Resource
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Submits the folder created in <c>CreateFolderButton_ClickAsync</c>.</para>
+        /// <para>Images should already be stored in the folder</para>
+        /// </remarks>
         private async void SubmitToAzureButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             string successfullySubmitted = string.Empty;
@@ -716,7 +812,14 @@ namespace PersonMaker
             }
         }
 
-        //Method for training the model to recognize the face of the person. Model training is blackboxed
+        /// <summary>
+        /// Trains the Facial Recognition Model in the Azure Face Resource
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Model training is blackboxed</para>
+        /// </remarks>
         private async void TrainButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             if (personGroupId.Length > 0)
@@ -747,7 +850,15 @@ namespace PersonMaker
             }
         }
 
-        //Method for submitting User data payload to Azure for the Person. Can submit a single Key/Value pair without adding to the payload. Submission will replace any key/value pairs that already exist for the Person
+        /// <summary>
+        /// Updates Face Resource Person User Data
+        /// </summary>
+        /// <param name="sender">A sender object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        /// <remarks>
+        /// <para>Can submit a single Key/Value pair without adding to the list using <c>AddUserDataToListButton_Click</c>.</para>
+        /// <para>Submission will replace any key/value pairs that already exist for the Person</para>
+        /// </remarks>
         private async void UpdateUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
             //Clear Globals
@@ -848,7 +959,10 @@ namespace PersonMaker
             }
         }
 
-        //API Call to assign all people to variable "People"
+        /// <summary>
+        /// Task for assigning all people to <c>People</c> via Face API
+        /// </summary>
+        /// <returns></returns>
         internal async Task<Person[]> GetKnownPeople()
         {
             Person[] people = null;
@@ -861,6 +975,11 @@ namespace PersonMaker
         }
 
         //API call to remove person
+        /// <summary>
+        /// Task for Deleting Face Person in knownGroup
+        /// </summary>
+        /// <param name="person">A <c>Person</c> object</param>
+        /// <returns></returns>
         internal async Task RemovePerson(Person person)
         {
             if (null != person)
@@ -870,6 +989,7 @@ namespace PersonMaker
             }
         }
 
+        //For API Throttling
         #region Image Upload Throttling
 
         public int apiMaxCallsPerMinute = 20;

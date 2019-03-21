@@ -122,6 +122,7 @@ namespace PersonMaker
             UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: ";
             UpdateUserDataPayloadTextBlock.Text = jsonString;
 
+            //Using Chilkat library to help pretty print the user data
             Chilkat.JsonObject json = new Chilkat.JsonObject();
             string emittedJson = "";
 
@@ -165,7 +166,7 @@ namespace PersonMaker
         /// </remarks>
         private async void AddPersonButtons(PersonGroup group = null, Person[] people = null)
         {
-            //Reset the UI elements
+            //Reset the UI elements including the buttons
             btns.Children.Clear();
             InfoHeaderTextBlock.Text = "";
 
@@ -184,6 +185,7 @@ namespace PersonMaker
                 {
                     foreach (var p in people)
                     {
+                        //UWP button object
                         Button newButton = new Button
                         {
                             Content = p.Name,
@@ -455,13 +457,19 @@ namespace PersonMaker
         /// </remarks>
         private async void DeleteUserDataButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
             personUserData = "{}";
             userDataPayload.Clear();
-            SubmissionStatusTextBlock.Text = "";
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            
+            //Reset UI Globals
             TrainStatusTextBlock.Text = "";
+            SubmissionStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
+            //Logic
             if (knownPerson.Name.Length <= 0)
             {
                 UpdateUserDataStatusTextBlock.Text = $"Person not found. Fetch a known Person";
@@ -646,14 +654,12 @@ namespace PersonMaker
             SubmissionStatusTextBlock.Text = "";
             TrainStatusTextBlock.Text = "";
 
-
             //Reset UI Colors
             PersonStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
             PersonGroupStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
-  
 
             //Prep API Call
             await ApiCallAllowed(true);
@@ -736,11 +742,17 @@ namespace PersonMaker
         /// </remarks>
         private async void SubmitToAzureButton_ClickAsync(object sender, RoutedEventArgs e)
         {
+            //Clear Globals
             string successfullySubmitted = string.Empty;
-            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
-            TrainStatusTextBlock.Text = "";
-            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
 
+            //Reset UI Globals
+            TrainStatusTextBlock.Text = "";
+
+            //Reset UI Colors
+            TrainStatusTextBlock.Foreground = new SolidColorBrush(Colors.Black);
+            SubmissionStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
+
+            //Logic
             int imageCounter = 0;
             if (null != personFolder)
             {
@@ -880,9 +892,13 @@ namespace PersonMaker
             }
 
             jsonString = JsonConvert.SerializeObject(userDataPayload);
+
+            //UI Text Change
             UpdateUserDataStatusTextBlock.Text = "User Data added to payload with the following User Data: " + jsonString;
             PersonUserDataNameTextBox.Text = "";
             PersonUserDataTextBox.Text = "";
+
+            //UI Color Change
             PersonUserDataTextBox.Foreground = new SolidColorBrush(Colors.Black);
             PersonUserDataNameTextBox.Foreground = new SolidColorBrush(Colors.Black);
 
@@ -919,9 +935,12 @@ namespace PersonMaker
                     {
                         knownPerson = matchedPeople.FirstOrDefault();
 
+                        //Change UI Text
                         UpdateUserDataStatusTextBlock.Text = "Updated Person: " + knownPerson.Name + " with the following User Data: " + knownPerson.UserData;
-                        UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
                         UpdateUserDataPayloadTextBlock.Text = knownPerson.UserData;
+
+                        //Change UI Colors
+                        UpdateUserDataStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
 
                         Chilkat.JsonObject json = new Chilkat.JsonObject();
                         string emittedJson = "";

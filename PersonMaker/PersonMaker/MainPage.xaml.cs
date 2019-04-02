@@ -1011,15 +1011,32 @@ namespace PersonMaker
         //For API Throttling
         #region Image Upload Throttling
 
+        /// <summary>
+        /// Maximum API Calls per minute based on pricing tier.
+        /// </summary>
+        /// <remarks>
+        /// <para>Max is 20 for free tier.</para>
+        /// </remarks>
         public int apiMaxCallsPerMinute = 20;
         [DllImport("kernel32")]
         extern static UInt64 GetTickCount64();
+
+        /// <summary>
+        /// List for keeping track when API calls were made
+        /// </summary>
         public List<UInt64> apiCallTimes = new List<UInt64>();
+        /// <summary>
+        /// Tick for keeping track of when API call occurs
+        /// </summary>
         public void NoteApiCallTime()
         {
             apiCallTimes.Add(GetTickCount64());
         }
 
+        /// <summary>
+        /// Task for preparing an API call
+        /// </summary>
+        /// <param name="addAnApiCall">A Bool to allow API call</param>
         public async Task ApiCallAllowed(bool addAnApiCall)
         {
             bool throttleActive = false;

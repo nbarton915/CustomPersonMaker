@@ -14,18 +14,18 @@ Create, train, fetch, update, and delete (people and groups)
 * Open the solution in Visual Studio
 * Right click on the Project and select properties
 
-![Properties](PersonMaker/PersonMaker/_site/images/properties.png?raw=true "Properties")
+![Properties](PersonMaker/PersonMaker/github/images/properties.png?raw=true "Properties")
 
 * Select the Build tab
 * Change the platform target to x86 and then save the properties (CTRL + S)
 
-![Build](PersonMaker/PersonMaker/_site/images/build.png?raw=true "Properties")
+![Build](PersonMaker/PersonMaker/github/images/build.png?raw=true "Properties")
 
 * Build the project
 * Select Local Machine as the debug target
 * Start debugging
 
-![Form](PersonMaker/PersonMaker/_site/images/startup.png?raw=true "Form")
+![Form](PersonMaker/PersonMaker/github/images/startup.png?raw=true "Form")
 
 # Create
 ## Person Group
@@ -37,7 +37,7 @@ A Person Group is the Face resource object that contains Persons. You must creat
 * Enter a friendly text name for the Person Group Name in step 2
 * Click Create Person Group to create the group
 
-![Person Group](PersonMaker/PersonMaker/_site/images/persongroup.png?raw=true "Person Group")
+![Person Group](PersonMaker/PersonMaker/github/images/persongroup.png?raw=true "Person Group")
 
 ## Person
 The Person object contains the Name, User Data, and Facial Recognition model for a person
@@ -45,7 +45,7 @@ The Person object contains the Name, User Data, and Facial Recognition model for
 * Enter the First and Last name of the Person in Step 3
 * Click Create Person to create the Person object in the Person Group
 
-![Person Name](PersonMaker/PersonMaker/_site/images/username.png?raw=true "Person Name")
+![Person Name](PersonMaker/PersonMaker/github/images/username.png?raw=true "Person Name")
 
 ## User Data
 User Data is optional but can be added as one or more key/value (label/value) pair. Create a list of these data pairs before submitting to Azure to be associated with the Person.
@@ -56,7 +56,7 @@ User Data is optional but can be added as one or more key/value (label/value) pa
 * Repeat this until you have all the data that you would like to be associated with the Person
 * Click Submit User Data to save the User Data list you created
 
-![Person Data](PersonMaker/PersonMaker/_site/images/userdata.png?raw=true "Person Data")
+![Person Data](PersonMaker/PersonMaker/github/images/userdata.png?raw=true "Person Data")
 
 ## Person Images
 Training the recognition model requires at least 10 good quality photos of the person. These photos must be isolated to contain only the person’s face

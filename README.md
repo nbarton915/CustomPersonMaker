@@ -8,6 +8,7 @@ Created As Convenience Utility For Integrating Project HoloRekognition With Azur
 * *Nathan Barton*
 
 *[Project HoloRekognition](https://github.com/LeviBowser/HoloRekognition)*
+
 *[Person Group Python Utility](https://github.com/CameronSpilker/DownloadPersonGroupInformation)*
 
 *The following is a quick start walkthrough for convenience. See the CREATING FACE RESOURCE Walkthrough at the bottom for help getting started with Microsoft Azure Face API.*

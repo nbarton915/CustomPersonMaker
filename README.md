@@ -1,7 +1,18 @@
 # CustomPersonMaker
-Created As Convenience Utility For Integrating Project HoloRekognition With Azure Face Resource
+Created As Convenience Utility For Integrating Project HoloRekognition With Azure Face Resource.
 
-Create, train, fetch, update, and delete (people and groups)
+*Project HoloRekognition is an academic project planned and developed in the Winter of 2019 by the following individuals as a part of the capstone requirement for the BYU Marriott School of Business MISM Program:*
+
+* *Levi Bowser*
+* *Cameron Spilker*
+* *Nathan Barton*
+
+*[Project HoloRekognition](https://github.com/LeviBowser/HoloRekognition)*
+*[Person Group Python Utility](https://github.com/CameronSpilker/DownloadPersonGroupInformation)*
+
+*The following is a quick start walkthrough for convenience. See the CREATING FACE RESOURCE Walkthrough at the bottom for help getting started with Microsoft Azure Face API.*
+
+# CUSTOM PERSON MAKER WALKTHROUGH
 ## Objective(s)
 * Learn how to create, train, fetch, update, and delete people and groups in your Face resource.
 
@@ -89,7 +100,7 @@ To delete a Person Group or Person, first, fetch the resource and then click on 
 ## Summary
 If you need to interface with the data in the Face resource, this application will allow you to create, train, fetch, update, and delete all items in the resource. 
 
-# Creating Face Resource
+# CREATE FACE RESOURCE WALKTHROUGH
 ## Objective(s)
 * Create a Face resource in the **WEST US** location. 
 * Get subscription key(s)
@@ -142,3 +153,8 @@ Take note of either one of the keys and safeguard it, as you will need it later.
 
 ## Summary
 You should have created a Face resource and retrieved your subscription keys. You will need to have the subscription key handy to interact with the Face API.
+
+# __
+*CustomPersonMaker extends the [Microsoft Open Source project PersonMaker](https://github.com/MicrosoftDocs/mixed-reality).*
+
+*The intent of the project was to create technology resources to be used by university researchers. Technologies used in the implementation of the project (i.e. Microsoft Azure Face API) were used under the appropriate licenses and are not the property of the students.*

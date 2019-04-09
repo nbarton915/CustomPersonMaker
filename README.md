@@ -10,7 +10,7 @@ Create, train, fetch, update, and delete (people and groups)
 * Visual studios environment set up (See Walkthrough 4 Setting Up Development Env)
 * Downloaded the Custom Person Maker application (See Walkthrough …)
 
-#3 Configure Project
+## Configure Project
 * Open the solution in Visual Studio
 * Right click on the Project and select properties
 
@@ -107,7 +107,7 @@ To use the *Face API* service in Azure, you will need to configure an instance o
 
 3. The new page will provide a description of the Face API service. At the bottom left of this prompt, select the **Create** button, to create an association with this service.
 
-![Create Face](/PersonMaker/PersonMaker/github/images/createrefacebutton.png?raw=true "Create Face")
+![Create Face](/PersonMaker/PersonMaker/github/images/createfacebutton.png?raw=true "Create Face")
 
 4. Once you have clicked on Create:
   * Insert your desired name for this service instance.

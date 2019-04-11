@@ -18,9 +18,9 @@ Created As Convenience Utility For Integrating Project HoloRekognition With Azur
 * Learn how to create, train, fetch, update, and delete people and groups in your Face resource.
 
 ## Prerequisite(s) 
-* Have a subscription key from Face resource (See * Walkthrough 1 Face Resource)
-* Visual studios environment set up (See Walkthrough 4 Setting Up Development Env)
-* Downloaded the Custom Person Maker application (See Walkthrough …)
+* Have a subscription key from Face resource (See Face Resource Walkthrough at the bottom)
+* Visual studios environment set up (See portions of the *[Project HoloRekognition](https://github.com/LeviBowser/HoloRekognition)* walkthrough)
+* Downloaded the Custom Person Maker application
 
 ## Configure Project
 * Open the solution in Visual Studio
